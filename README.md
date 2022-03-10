@@ -1,10 +1,10 @@
 <div id="top"></div>
-========================================
-RuVa - RUNTIME VARIABILITY
-========================================
+
+# RuVa - RUNTIME VARIABILITY
+
  
 
-INSTALACIÓN DE RuVa:
+# INSTALACIÓN DE RuVa:
 ================================
 
 1. PRECONDICIONES:
@@ -32,19 +32,11 @@ Una vez que RuVa.cfg apunta al fichero .init a lanzar, ya se puede ejecutar RuVa
 
 
 
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-   
+ 
 <!-- CONTACT -->
 ## Contacto
 
-Alejandro Valdezate - [@valdezate](https://twitter.com/valdezate) - vzthesis
+Alejandro Valdezate - [@valdezate](https://twitter.com/valdezate) - 
 
 Project Link: [https://github.com/valdezate/RuVa](https://github.com/valdezate/RuVa)
 
