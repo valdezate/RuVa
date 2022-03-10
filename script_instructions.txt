@@ -1,0 +1,19 @@
+%
+% COMMANDS
+%
+% LOAD_FM (path/name.ext)
+% SHOW_FM ()
+% STATISTICS ()
+% WRITE_LINE (text)
+% ADD_FEATURE (name,description,relation,(supertype1,supertype2,...)
+% REMOVE_FEATURE (name)
+% 
+%
+% -------
+% STATISTICS
+% 
+% show number of products/combinations
+% show max depth
+% show show max width
+% show num. supertypes different
+% show num of features

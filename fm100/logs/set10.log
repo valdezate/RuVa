@@ -1,0 +1,307 @@
+Procesando: D:/workspace/202112/features/fm100/set10.init
+Path log: D:/workspace/202112/features/fm100/logs/set10.log
+Loaded D:/workspace/202112/features/fm100/0100.fm
+============================================
+STATISTICS
+-----------
+
+Features: 101
+Breeding features: 19
+Childless features: 82
+Nodes AND: 17 (58,62%)
+Nodes OR: 5 (17,24%)
+Nodes XOR: 7 (24,14%)
+Nodes Mandatory: 70 (69,31%)
+Nodes Optional: 31 (30,69%)
+Depth tree: 6
+Average Branching Factor: 1,23
+Maximum Branching Factor: 10
+Maximum number of Nodes in SET relationship: 7
+Supertypes: 9
+Nodes with supertypes: 10
+Max supertypes in a node: 2
+Constraints: 5
+REQUIRE Constraints: 3
+EXCLUDE Constraints: 2
+---------------------
+FX1 - adding - |RT->MANDATORY |RS->AND |ST->ST2 ST4
+FX1 - adding - 1 SUCCESS - Feature FX1 inserted under F4 - Solution:1/1
+FX2 - adding - |RT->MANDATORY |RS->AND |ST->ST8
+FX2 - adding - 1 SUCCESS - Feature FX2 inserted under root - Solution:1/1
+FX3 - adding - |RT->MANDATORY |RS->AND |ST->ST2
+FX3 - adding - 1 SUCCESS - Feature FX3 inserted under F4 - Solution:1/2
+FX4 - adding - |RT->MANDATORY |RS->AND |ST->ST4
+FX4 - adding - 1 SUCCESS - Feature FX4 inserted under F4 - Solution:1/2
+FX5 - adding - |RT->OPTIONAL |RS->OR |ST->ST3 ST10
+FX5 - adding - 1 SUCCESS - Feature FX5 inserted under TO-F69_F70_F71_F72-SET - Solution:1/2
+FX6 - adding - |RT->OPTIONAL |RS->XOR |ST->ST3
+FX6 - adding - 1 SUCCESS - Feature FX6 inserted under FX5 - Solution:2/2
+FX7 - adding - |RT->MANDATORY |RS->AND |ST->ST1 ST9
+FX7 - adding - 1 SUCCESS - Feature FX7 inserted under F16 - Solution:1/5
+FX8 - adding - |RT->MANDATORY |RS->AND |ST->ST7
+FX8 - adding - 1 SUCCESS - Feature FX8 inserted under F3 - Solution:1/1
+FX9 - adding - |RT->OPTIONAL |RS->OR |ST->ST5 ST2
+FX9 - adding - 1 SUCCESS - Feature FX9 inserted under TO-F69_F70_F71_F72-SET - Solution:1/7
+FX10 - adding - |RT->MANDATORY |RS->AND |ST->ST6
+FX10 - adding - 1 SUCCESS - Feature FX10 inserted under F11 - Solution:1/1
+INSERTION TIME USED: 7,69 second(s) 
+TOTAL: 10
+SUCCESS: 10
+FAILURES: 0
+===================================================================================================================================================
+ID  |NAME                               |RS |RT |TYPE |IDPA|PARENT              |TOTS |TOTC |MIN C|MAX C|TAND |TOR  |TXOR |LEVEL|SUPERTYPES     |S|
+---------------------------------------------------------------------------------------------------------------------------------------------------
+1   |root                               |AND|M  |BASIC|0   |                    |0    |9    |0    |0    |1    |0    |0    |0    |               |0|
+2   |F1                                 |AND|O  |BASIC|1   |                    |0    |0    |0    |0    |0    |0    |0    |1    |               |0|
+3   |F2                                 |AND|O  |BASIC|1   |                    |0    |10   |0    |0    |1    |1    |1    |1    |               |0|
+4   |F3                                 |AND|M  |BASIC|1   |                    |0    |1    |0    |0    |1    |0    |0    |1    |ST7            |1|
+5   |F4                                 |AND|O  |BASIC|1   |                    |0    |1    |0    |0    |1    |0    |0    |1    |ST2,ST4        |2|
+6   |F5                                 |AND|O  |BASIC|1   |                    |0    |0    |0    |0    |0    |0    |0    |1    |               |0|
+7   |F6                                 |AND|M  |BASIC|1   |                    |0    |8    |0    |0    |1    |1    |0    |1    |               |0|
+8   |F7                                 |AND|M  |BASIC|1   |                    |0    |6    |0    |0    |1    |0    |1    |1    |ST5            |1|
+9   |F8                                 |AND|M  |BASIC|1   |                    |0    |8    |0    |0    |1    |0    |1    |1    |ST10           |1|
+10  |F9                                 |AND|O  |BASIC|1   |                    |0    |5    |0    |0    |1    |0    |1    |1    |ST1,ST5        |2|
+11  |F28                                |AND|M  |BASIC|3   |                    |0    |7    |0    |0    |0    |0    |1    |2    |ST1            |1|
+12  |F29                                |AND|O  |BASIC|3   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+13  |F30                                |AND|O  |BASIC|3   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+14  |F31                                |AND|M  |BASIC|3   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+15  |TO-F32_F33_F34-SET                 |OR |M  |SET  |3   |                    |0    |3    |1    |3    |0    |0    |0    |2    |               |0|
+16  |F32                                |OR |M  |BASIC|15  |                    |0    |10   |0    |0    |1    |1    |0    |3    |ST3,ST5        |2|
+17  |F33                                |OR |M  |BASIC|15  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+18  |F34                                |OR |M  |BASIC|15  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+19  |TO-F35_F36_F37-SET                 |XOR|M  |SET  |3   |                    |0    |3    |1    |1    |0    |0    |0    |2    |               |0|
+20  |F35                                |XOR|M  |BASIC|19  |                    |0    |4    |0    |0    |1    |1    |0    |3    |               |0|
+21  |F36                                |XOR|M  |BASIC|19  |                    |0    |1    |0    |0    |1    |0    |0    |3    |               |0|
+22  |F37                                |XOR|M  |BASIC|19  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+23  |F27                                |AND|M  |BASIC|4   |                    |0    |3    |0    |0    |0    |0    |1    |2    |               |0|
+24  |F91                                |AND|O  |BASIC|5   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+25  |F10                                |AND|O  |BASIC|7   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+26  |F11                                |AND|O  |BASIC|7   |                    |0    |3    |0    |0    |1    |0    |0    |2    |ST1,ST6        |2|
+27  |F12                                |AND|M  |BASIC|7   |                    |0    |2    |0    |0    |1    |0    |0    |2    |ST9            |1|
+28  |F13                                |AND|M  |BASIC|7   |                    |0    |3    |0    |0    |1    |0    |0    |2    |               |0|
+29  |F14                                |AND|M  |BASIC|7   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+30  |F15                                |AND|M  |BASIC|7   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+31  |TO-F16_F17-SET                     |OR |M  |SET  |7   |                    |0    |2    |1    |2    |0    |0    |0    |2    |               |0|
+32  |F16                                |OR |M  |BASIC|31  |                    |0    |9    |0    |0    |1    |1    |1    |3    |ST5,ST9        |2|
+33  |F17                                |OR |M  |BASIC|31  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+34  |F38                                |AND|O  |BASIC|8   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+35  |F39                                |AND|M  |BASIC|8   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+36  |F40                                |AND|M  |BASIC|8   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+37  |TO-F41_F42_F43-SET                 |XOR|M  |SET  |8   |                    |0    |3    |1    |1    |0    |0    |0    |2    |               |0|
+38  |F41                                |XOR|M  |BASIC|37  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+39  |F42                                |XOR|M  |BASIC|37  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+40  |F43                                |XOR|M  |BASIC|37  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+41  |F55                                |AND|O  |BASIC|9   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+42  |F56                                |AND|O  |BASIC|9   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+43  |F57                                |AND|M  |BASIC|9   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+44  |F58                                |AND|M  |BASIC|9   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+45  |F59                                |AND|M  |BASIC|9   |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+46  |TO-F60_F61_F62-SET                 |XOR|M  |SET  |9   |                    |0    |3    |1    |1    |0    |0    |0    |2    |               |0|
+47  |F60                                |XOR|M  |BASIC|46  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+48  |F61                                |XOR|M  |BASIC|46  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+49  |F62                                |XOR|M  |BASIC|46  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+50  |F78                                |AND|M  |BASIC|10  |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+51  |F79                                |AND|O  |BASIC|10  |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+52  |F80                                |AND|O  |BASIC|10  |                    |0    |0    |0    |0    |0    |0    |0    |2    |               |0|
+53  |TO-F81_F82-SET                     |XOR|M  |SET  |10  |                    |0    |2    |1    |1    |0    |0    |0    |2    |               |0|
+54  |F81                                |XOR|M  |BASIC|53  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+55  |F82                                |XOR|M  |BASIC|53  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+56  |TO-F94_F95_F96_F97_F98_F99_F100-SET|XOR|M  |SET  |11  |                    |0    |7    |1    |1    |0    |0    |0    |3    |               |0|
+57  |F94                                |XOR|M  |BASIC|56  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+58  |F95                                |XOR|M  |BASIC|56  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+59  |F96                                |XOR|M  |BASIC|56  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+60  |F97                                |XOR|M  |BASIC|56  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+61  |F98                                |XOR|M  |BASIC|56  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+62  |F99                                |XOR|M  |BASIC|56  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+63  |F100                               |XOR|M  |BASIC|56  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+64  |F63                                |AND|M  |BASIC|16  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+65  |F64                                |AND|O  |BASIC|16  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+66  |F65                                |AND|O  |BASIC|16  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+67  |F66                                |AND|O  |BASIC|16  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+68  |F67                                |AND|M  |BASIC|16  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+69  |F68                                |AND|M  |BASIC|16  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+70  |TO-F69_F70_F71_F72-SET             |OR |M  |SET  |16  |                    |0    |4    |1    |4    |0    |0    |0    |4    |               |0|
+71  |F69                                |OR |M  |BASIC|70  |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+72  |F70                                |OR |M  |BASIC|70  |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+73  |F71                                |OR |M  |BASIC|70  |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+74  |F72                                |OR |M  |BASIC|70  |                    |0    |5    |0    |0    |1    |0    |0    |5    |               |0|
+75  |F83                                |AND|M  |BASIC|20  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+76  |F84                                |AND|M  |BASIC|20  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+77  |TO-F92_F93-SET                     |OR |M  |SET  |20  |                    |0    |2    |1    |2    |0    |0    |0    |4    |               |0|
+78  |F92                                |OR |M  |BASIC|77  |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+79  |F93                                |OR |M  |BASIC|77  |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+80  |F88                                |AND|M  |BASIC|21  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+81  |TO-F52_F53_F54-SET                 |XOR|M  |SET  |23  |                    |0    |3    |1    |1    |0    |0    |0    |3    |               |0|
+82  |F52                                |XOR|M  |BASIC|81  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+83  |F53                                |XOR|M  |BASIC|81  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+84  |F54                                |XOR|M  |BASIC|81  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+85  |F46                                |AND|M  |BASIC|26  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+86  |F47                                |AND|M  |BASIC|26  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+87  |F48                                |AND|O  |BASIC|26  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+88  |F44                                |AND|O  |BASIC|27  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+89  |F45                                |AND|M  |BASIC|27  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+90  |F49                                |AND|O  |BASIC|28  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+91  |F50                                |AND|O  |BASIC|28  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+92  |F51                                |AND|M  |BASIC|28  |                    |0    |0    |0    |0    |0    |0    |0    |3    |               |0|
+93  |F18                                |AND|O  |BASIC|32  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+94  |F19                                |AND|M  |BASIC|32  |                    |0    |5    |0    |0    |1    |0    |0    |4    |               |0|
+95  |F20                                |AND|M  |BASIC|32  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+96  |F21                                |AND|O  |BASIC|32  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+97  |F22                                |AND|O  |BASIC|32  |                    |0    |0    |0    |0    |0    |0    |0    |4    |               |0|
+98  |TO-F23_F24-SET                     |OR |M  |SET  |32  |                    |0    |2    |1    |2    |0    |0    |0    |4    |               |0|
+99  |F23                                |OR |M  |BASIC|98  |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+100 |F24                                |OR |M  |BASIC|98  |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+101 |TO-F25_F26-SET                     |XOR|M  |SET  |32  |                    |0    |2    |1    |1    |0    |0    |0    |4    |               |0|
+102 |F25                                |XOR|M  |BASIC|101 |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+103 |F26                                |XOR|M  |BASIC|101 |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+104 |F73                                |AND|M  |BASIC|74  |                    |0    |0    |0    |0    |0    |0    |0    |6    |               |0|
+105 |F74                                |AND|O  |BASIC|74  |                    |0    |0    |0    |0    |0    |0    |0    |6    |               |0|
+106 |F75                                |AND|O  |BASIC|74  |                    |0    |0    |0    |0    |0    |0    |0    |6    |               |0|
+107 |F76                                |AND|O  |BASIC|74  |                    |0    |0    |0    |0    |0    |0    |0    |6    |               |0|
+108 |F77                                |AND|M  |BASIC|74  |                    |0    |0    |0    |0    |0    |0    |0    |6    |               |0|
+109 |F85                                |AND|O  |BASIC|94  |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+110 |F86                                |AND|M  |BASIC|94  |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+111 |F87                                |AND|M  |BASIC|94  |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+112 |F89                                |AND|O  |BASIC|94  |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+113 |F90                                |AND|O  |BASIC|94  |                    |0    |0    |0    |0    |0    |0    |0    |5    |               |0|
+114 |FX1                                |AND|M  |BASIC|5   |                    |0    |0    |0    |0    |0    |0    |0    |2    |ST2,ST4        |2|
+115 |FX2                                |AND|M  |BASIC|1   |                    |0    |0    |0    |0    |0    |0    |0    |1    |ST8            |1|
+116 |FX3                                |AND|M  |BASIC|5   |                    |0    |0    |0    |0    |0    |0    |0    |2    |ST2            |1|
+117 |FX4                                |AND|M  |BASIC|5   |                    |0    |0    |0    |0    |0    |0    |0    |2    |ST4            |1|
+118 |FX5                                |OR |O  |BASIC|70  |                    |0    |0    |0    |0    |0    |0    |0    |4    |ST3,ST10       |2|
+119 |FX6                                |AND|O  |BASIC|118 |                    |0    |0    |0    |0    |0    |0    |0    |5    |ST3            |1|
+120 |FX7                                |AND|M  |BASIC|32  |                    |0    |0    |0    |0    |0    |0    |0    |4    |ST1,ST9        |2|
+121 |FX8                                |AND|M  |BASIC|4   |                    |0    |0    |0    |0    |0    |0    |0    |2    |ST7            |1|
+122 |FX9                                |OR |O  |BASIC|70  |                    |0    |0    |0    |0    |0    |0    |0    |4    |ST5,ST2        |2|
+123 |FX10                               |AND|M  |BASIC|26  |                    |0    |0    |0    |0    |0    |0    |0    |3    |ST6            |1|
+===============================================================================================================
+=================================================================================================================
+TREE
+---------------------------
+--- BEGIN FEATURE MODEL ---
+|
+|--> root TYPE=BASIC PR=M SR=AND ST:[] Level: 0
+|----> F1 TYPE=BASIC PR=O SR=AND ST:[] Level: 1
+|----> F2 TYPE=BASIC PR=O SR=AND ST:[] Level: 1
+|------> F28 TYPE=BASIC PR=M SR=AND ST:[ST1] Level: 2
+|--------> TO-F94_F95_F96_F97_F98_F99_F100-SET TYPE=SET PR=M SR=XOR ST:[]// Level: 3
+|----------> F94 TYPE=BASIC PR=M SR=XOR ST:[] Level: 4
+|----------> F95 TYPE=BASIC PR=M SR=XOR ST:[] Level: 4
+|----------> F96 TYPE=BASIC PR=M SR=XOR ST:[] Level: 4
+|----------> F97 TYPE=BASIC PR=M SR=XOR ST:[] Level: 4
+|----------> F98 TYPE=BASIC PR=M SR=XOR ST:[] Level: 4
+|----------> F99 TYPE=BASIC PR=M SR=XOR ST:[] Level: 4
+|----------> F100 TYPE=BASIC PR=M SR=XOR ST:[] Level: 4
+|------> F29 TYPE=BASIC PR=O SR=AND ST:[] Level: 2
+|------> F30 TYPE=BASIC PR=O SR=AND ST:[] Level: 2
+|------> F31 TYPE=BASIC PR=M SR=AND ST:[] Level: 2
+|------> TO-F32_F33_F34-SET TYPE=SET PR=M SR=OR ST:[]// Level: 2
+|--------> F32 TYPE=BASIC PR=M SR=OR ST:[ST3, ST5] Level: 3
+|----------> F63 TYPE=BASIC PR=M SR=AND ST:[] Level: 4
+|----------> F64 TYPE=BASIC PR=O SR=AND ST:[] Level: 4
+|----------> F65 TYPE=BASIC PR=O SR=AND ST:[] Level: 4
+|----------> F66 TYPE=BASIC PR=O SR=AND ST:[] Level: 4
+|----------> F67 TYPE=BASIC PR=M SR=AND ST:[] Level: 4
+|----------> F68 TYPE=BASIC PR=M SR=AND ST:[] Level: 4
+|----------> TO-F69_F70_F71_F72-SET TYPE=SET PR=M SR=OR ST:[]// Level: 4
+|------------> F69 TYPE=BASIC PR=M SR=OR ST:[] Level: 5
+|------------> F70 TYPE=BASIC PR=M SR=OR ST:[] Level: 5
+|------------> F71 TYPE=BASIC PR=M SR=OR ST:[] Level: 5
+|------------> F72 TYPE=BASIC PR=M SR=OR ST:[] Level: 5
+|--------------> F73 TYPE=BASIC PR=M SR=AND ST:[] Level: 6
+|--------------> F74 TYPE=BASIC PR=O SR=AND ST:[] Level: 6
+|--------------> F75 TYPE=BASIC PR=O SR=AND ST:[] Level: 6
+|--------------> F76 TYPE=BASIC PR=O SR=AND ST:[] Level: 6
+|--------------> F77 TYPE=BASIC PR=M SR=AND ST:[] Level: 6
+|------------> FX5 TYPE=BASIC PR=O SR=OR ST:[ST3, ST10] Level: 4
+|--------------> FX6 TYPE=BASIC PR=O SR=AND ST:[ST3] Level: 5
+|------------> FX9 TYPE=BASIC PR=O SR=OR ST:[ST5, ST2] Level: 4
+|--------> F33 TYPE=BASIC PR=M SR=OR ST:[] Level: 3
+|--------> F34 TYPE=BASIC PR=M SR=OR ST:[] Level: 3
+|------> TO-F35_F36_F37-SET TYPE=SET PR=M SR=XOR ST:[]// Level: 2
+|--------> F35 TYPE=BASIC PR=M SR=XOR ST:[] Level: 3
+|----------> F83 TYPE=BASIC PR=M SR=AND ST:[] Level: 4
+|----------> F84 TYPE=BASIC PR=M SR=AND ST:[] Level: 4
+|----------> TO-F92_F93-SET TYPE=SET PR=M SR=OR ST:[]// Level: 4
+|------------> F92 TYPE=BASIC PR=M SR=OR ST:[] Level: 5
+|------------> F93 TYPE=BASIC PR=M SR=OR ST:[] Level: 5
+|--------> F36 TYPE=BASIC PR=M SR=XOR ST:[] Level: 3
+|----------> F88 TYPE=BASIC PR=M SR=AND ST:[] Level: 4
+|--------> F37 TYPE=BASIC PR=M SR=XOR ST:[] Level: 3
+|----> F3 TYPE=BASIC PR=M SR=AND ST:[ST7] Level: 1
+|------> F27 TYPE=BASIC PR=M SR=AND ST:[] Level: 2
+|--------> TO-F52_F53_F54-SET TYPE=SET PR=M SR=XOR ST:[]// Level: 3
+|----------> F52 TYPE=BASIC PR=M SR=XOR ST:[] Level: 4
+|----------> F53 TYPE=BASIC PR=M SR=XOR ST:[] Level: 4
+|----------> F54 TYPE=BASIC PR=M SR=XOR ST:[] Level: 4
+|------> FX8 TYPE=BASIC PR=M SR=AND ST:[ST7] Level: 2
+|----> F4 TYPE=BASIC PR=O SR=AND ST:[ST2, ST4] Level: 1
+|------> F91 TYPE=BASIC PR=O SR=AND ST:[] Level: 2
+|------> FX1 TYPE=BASIC PR=M SR=AND ST:[ST2, ST4] Level: 2
+|------> FX3 TYPE=BASIC PR=M SR=AND ST:[ST2] Level: 2
+|------> FX4 TYPE=BASIC PR=M SR=AND ST:[ST4] Level: 2
+|----> F5 TYPE=BASIC PR=O SR=AND ST:[] Level: 1
+|----> F6 TYPE=BASIC PR=M SR=AND ST:[] Level: 1
+|------> F10 TYPE=BASIC PR=O SR=AND ST:[] Level: 2
+|------> F11 TYPE=BASIC PR=O SR=AND ST:[ST1, ST6] Level: 2
+|--------> F46 TYPE=BASIC PR=M SR=AND ST:[] Level: 3
+|--------> F47 TYPE=BASIC PR=M SR=AND ST:[] Level: 3
+|--------> F48 TYPE=BASIC PR=O SR=AND ST:[] Level: 3
+|--------> FX10 TYPE=BASIC PR=M SR=AND ST:[ST6] Level: 3
+|------> F12 TYPE=BASIC PR=M SR=AND ST:[ST9] Level: 2
+|--------> F44 TYPE=BASIC PR=O SR=AND ST:[] Level: 3
+|--------> F45 TYPE=BASIC PR=M SR=AND ST:[] Level: 3
+|------> F13 TYPE=BASIC PR=M SR=AND ST:[] Level: 2
+|--------> F49 TYPE=BASIC PR=O SR=AND ST:[] Level: 3
+|--------> F50 TYPE=BASIC PR=O SR=AND ST:[] Level: 3
+|--------> F51 TYPE=BASIC PR=M SR=AND ST:[] Level: 3
+|------> F14 TYPE=BASIC PR=M SR=AND ST:[] Level: 2
+|------> F15 TYPE=BASIC PR=M SR=AND ST:[] Level: 2
+|------> TO-F16_F17-SET TYPE=SET PR=M SR=OR ST:[]// Level: 2
+|--------> F16 TYPE=BASIC PR=M SR=OR ST:[ST5, ST9] Level: 3
+|----------> F18 TYPE=BASIC PR=O SR=AND ST:[] Level: 4
+|----------> F19 TYPE=BASIC PR=M SR=AND ST:[] Level: 4
+|------------> F85 TYPE=BASIC PR=O SR=AND ST:[] Level: 5
+|------------> F86 TYPE=BASIC PR=M SR=AND ST:[] Level: 5
+|------------> F87 TYPE=BASIC PR=M SR=AND ST:[] Level: 5
+|------------> F89 TYPE=BASIC PR=O SR=AND ST:[] Level: 5
+|------------> F90 TYPE=BASIC PR=O SR=AND ST:[] Level: 5
+|----------> F20 TYPE=BASIC PR=M SR=AND ST:[] Level: 4
+|----------> F21 TYPE=BASIC PR=O SR=AND ST:[] Level: 4
+|----------> F22 TYPE=BASIC PR=O SR=AND ST:[] Level: 4
+|----------> TO-F23_F24-SET TYPE=SET PR=M SR=OR ST:[]// Level: 4
+|------------> F23 TYPE=BASIC PR=M SR=OR ST:[] Level: 5
+|------------> F24 TYPE=BASIC PR=M SR=OR ST:[] Level: 5
+|----------> TO-F25_F26-SET TYPE=SET PR=M SR=XOR ST:[]// Level: 4
+|------------> F25 TYPE=BASIC PR=M SR=XOR ST:[] Level: 5
+|------------> F26 TYPE=BASIC PR=M SR=XOR ST:[] Level: 5
+|----------> FX7 TYPE=BASIC PR=M SR=AND ST:[ST1, ST9] Level: 4
+|--------> F17 TYPE=BASIC PR=M SR=OR ST:[] Level: 3
+|----> F7 TYPE=BASIC PR=M SR=AND ST:[ST5] Level: 1
+|------> F38 TYPE=BASIC PR=O SR=AND ST:[] Level: 2
+|------> F39 TYPE=BASIC PR=M SR=AND ST:[] Level: 2
+|------> F40 TYPE=BASIC PR=M SR=AND ST:[] Level: 2
+|------> TO-F41_F42_F43-SET TYPE=SET PR=M SR=XOR ST:[]// Level: 2
+|--------> F41 TYPE=BASIC PR=M SR=XOR ST:[] Level: 3
+|--------> F42 TYPE=BASIC PR=M SR=XOR ST:[] Level: 3
+|--------> F43 TYPE=BASIC PR=M SR=XOR ST:[] Level: 3
+|----> F8 TYPE=BASIC PR=M SR=AND ST:[ST10] Level: 1
+|------> F55 TYPE=BASIC PR=O SR=AND ST:[] Level: 2
+|------> F56 TYPE=BASIC PR=O SR=AND ST:[] Level: 2
+|------> F57 TYPE=BASIC PR=M SR=AND ST:[] Level: 2
+|------> F58 TYPE=BASIC PR=M SR=AND ST:[] Level: 2
+|------> F59 TYPE=BASIC PR=M SR=AND ST:[] Level: 2
+|------> TO-F60_F61_F62-SET TYPE=SET PR=M SR=XOR ST:[]// Level: 2
+|--------> F60 TYPE=BASIC PR=M SR=XOR ST:[] Level: 3
+|--------> F61 TYPE=BASIC PR=M SR=XOR ST:[] Level: 3
+|--------> F62 TYPE=BASIC PR=M SR=XOR ST:[] Level: 3
+|----> F9 TYPE=BASIC PR=O SR=AND ST:[ST1, ST5] Level: 1
+|------> F78 TYPE=BASIC PR=M SR=AND ST:[] Level: 2
+|------> F79 TYPE=BASIC PR=O SR=AND ST:[] Level: 2
+|------> F80 TYPE=BASIC PR=O SR=AND ST:[] Level: 2
+|------> TO-F81_F82-SET TYPE=SET PR=M SR=XOR ST:[]// Level: 2
+|--------> F81 TYPE=BASIC PR=M SR=XOR ST:[] Level: 3
+|--------> F82 TYPE=BASIC PR=M SR=XOR ST:[] Level: 3
+|----> FX2 TYPE=BASIC PR=M SR=AND ST:[ST8] Level: 1
+|
+---- END FEATURE MODEL ----

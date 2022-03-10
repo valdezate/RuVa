@@ -1,0 +1,6 @@
+; MODE (0=batch;1=interactive;2=script)
+mode=
+; OUT (0=console;1=file)
+out=
+; FILEOUT (path)
+fileout=
