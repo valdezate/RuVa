@@ -16,10 +16,10 @@ public class AbcInitSystem {
 		processConfig(pathConfigFile);
 		
 		boolean isError=false;
-		if (args.length > 1) { //si hay más de 1 parámetro
+		if (args.length > 1) {
 			System.out.println("Hay demasiados parámetros");
 			isError=true;
-		} else if (args.length == 0) { //si no hay parámetros      
+		} else if (args.length == 0) {      
 			//mode=1; 
 		} else {
 			sl.gMode=0;
@@ -35,25 +35,12 @@ public class AbcInitSystem {
 			sl.isError=false; 
 			String rootName="his";
 			String extension="xml";
-			//String myFile="fm/android.fm";
-			//String myFile="fm/eshop.fm";
 			String myFile="D:/workspace/201903/features/fm/"+rootName+"."+extension;
 			if (!sl.isError) {
 				loadConfiguration();
 				if (!sl.isError) {
 					loadRepositories();
 					if (!sl.isError) {
-						// 1 AUTOLOAD FROM MYSQL
-						//sl.loadSystem(5);
-						//
-						// 2. AUTOLOAD FROM .FM TEXTFILES AND REGENERATE .FM
-						//sl.readFMFile("repository/case1.fm");
-						//sl.populateFMfromFMFile();
-						//showFeatureModel();
-						//sl.generateFMFile();
-						//sl.writeFMFile("repository/salida.fm");
-						//
-						// 3. AUTOLOAD FROM CASE 1
 						sl.typeOfFMFile=sl.getTypeFMFile(myFile);
 						
 					    switch (sl.typeOfFMFile) {  //1=ruva;2=fm;3=xml(FaMa);4=xml(FeatureIde);5=afm(FaMa)
@@ -73,70 +60,7 @@ public class AbcInitSystem {
 					    default:
 					    	break;
 					    }
-					    
-						//showFeatureModel();
-						
-						 
-						// TESTING FAMA 
-						//sl.generateFMFile(1,sl.eTree,sl.fmFile);
-						//sl.writeFMFile("fm/"+rootName+"_bis.fm");
-						//sl.validateFM();
-						// END FAMA 
-						
-						
-						// TESTING ADD FEATURE ANDROID WITH SUPERTYPES 
-						//sl.addFAuto( "F1","MEMORY");
-						//sl.addFAuto( "F2","STORAGE");
-						//sl.addFAuto( "F3","MULTIMEDIA");
-						//sl.addFAuto( "F4","COMMUNICATIONS");
-						//sl.addFAuto( "F5","INTERFACETYPE");
-						//sl.addFAuto( "F6","NEWVISUALIZATIONCAPACITIES");
-						//sl.addFAuto( "F7","MEMORY,MULTIMEDIA");
-						//sl.addFAuto( "F8","MEMORY,MULTIMEDIA,NEWVISUALIZATIONCAPACITIES");
-						//sl.addFAuto( "F9","MEMORY,STORAGE");
-						//sl.addFAuto("F10","INTERFACETYPE,MULTIMEDIA");
-						//sl.addFAuto("F11","COMMUNICATIONS,MULTIMEDIA");
-						//sl.addFAuto("F12","MEMORY,STORAGE,MULTIMEDIA,COMMUNICATIONS,INTERFACETYPE");
-						//sl.addFAuto("F13","MEMORY,STORAGE,MULTIMEDIA,COMMUNICATIONS");
-						//sl.addFAuto("F14","INTERFACETYPE,COMMUNICATIONS");
-						//sl.addFAuto("F15","INTERFACETYPE,COMMUNICATIONS,MEMORY");
-						//sl.addFAuto("F16","STORAGE,MULTIMEDIA");
-						//sl.addFAuto("F17","STORAGE,COMMUNICATIONS");
-						//sl.addFAuto("F18","STORAGE,INTERFACETYPE");
-						//sl.addFAuto("F19","COMMUNICATIONS,INTERFACETYPE");
-						//sl.addFAuto("F20","NEWVISUALIZATIONTYPES,AUTONOMY");
-						
-						
-						/*
-						 //5 IN A ROW
-						 
-						sl.addFAuto( "F4","COMMUNICATIONS");
-						//sl.addFAuto("F10","INTERFACETYPE,MULTIMEDIA");
-						sl.addFAuto("F14","INTERFACETYPE,COMMUNICATIONS");
-						sl.addFAuto("F3","MULTIMEDIA");
-						sl.addFAuto("F1","MEMORY");
-						*/
-						
-						
-						//--
-						//END TESTING ADD FEATURE
-						//showFeatureModel();
-						
-						//sl.validateFM();
-						//sl.generateFMFile(1);
-						//sl.writeFMFile("fm/salida.fm");
-						//
-						// 5. NO-AUTOLOAD, NORMAL BOOT
-						// 
-						/*
-						if (!sl.isError) {
-							//showMenu();
-							while  (!isFinal){
-								askCommand();
-							}
-						}
-						*/
-						System.out.println("FINAL");
+	
 					}
 				} else {
 					System.err.println("Can't load configuration. Exist database? \n\nExiting now ... ->");
@@ -154,12 +78,7 @@ public class AbcInitSystem {
 		}
 	}
 
-	private static void addFeatureRepository() {
-		System.out.println("Not implemented yet"); 
-	}	
 	private static boolean sendRuvaCommand(String msg) {
-		
-		
 		return true;
 	}
 
@@ -173,12 +92,6 @@ public class AbcInitSystem {
         case "sf": case "1": 
         	showFeatures();
         	break;
-        case "afr": case "2":
-        	addFeatureRepository();
-        	break;
-        case "rfr": case "3": 
-        	removeFeatureRepository(); 
-        	break;
         case "sst": case "4": 
         	showSupertypes();
         	break;
@@ -187,18 +100,6 @@ public class AbcInitSystem {
         	break;
         case "afs": case "11":
         	//addFeatureOld();
-        	break;
-        case "rfs": case "12": 
-        	removeFeature();
-        	break;
-        case "ar": case "13": 
-        	addRestriction();
-        	break;
-        case "rr": case "14": 
-        	removeRestriction();
-        	break;
-        case "tc": case "15": 
-        	testConfiguration();
         	break;
         case "sfm": case "16":  
         	showFeatureModel();
@@ -240,7 +141,6 @@ public class AbcInitSystem {
         }
 	}	
 	private static void addRestriction() {
-		System.out.println("Not implemented yet"); 
 	}		
 	private static void exitSystem() {
 		isFinal=true;
@@ -272,16 +172,6 @@ public class AbcInitSystem {
 		System.out.println("");
 		sl.resetSystem();
 	}	
-	private static void removeFeatureRepository() {
-		System.out.println("Not implemented yet"); 
-	}		
-	private static void removeFeature() {
-		System.out.println("Not implemented yet"); 
-	}	
-
-	private static void removeRestriction() {
-		System.out.println("Not implemented yet"); 
-	}
 	private static void loadFromFMFile() {
 		boolean isError=false;
 		System.out.println("");
@@ -308,21 +198,6 @@ public class AbcInitSystem {
 	private static void showMenu() {
 		System.out.println("------------------------------------------");
 		System.out.println("--- FEATURE MANAGER MODEL-DRIVEN MENU ----");
-		System.out.println("------------------------------------------");
-		System.out.println("1. Show features (sf)");
-		System.out.println("2. Add feature to repository (afr)");
-		System.out.println("3. Remove feature from repository (rfr)");
-		System.out.println("4. Show supertypes (sst)");
-		System.out.println("5. Show feature-supertype relations (sfs)");
-		System.out.println("------------------------------------------");
-		System.out.println("11. Add feature to feature model (af)");
-		System.out.println("12. Remove feature from feature model (rf)");
-		System.out.println("13. Add restriction (ar)");
-		System.out.println("14. Remove restriction (rr)");
-		System.out.println("15. Test configuration (tc)");
-		System.out.println("16. Show feature model (sfm)");
-		System.out.println("17. Show constraints (sc)");
-		System.out.println("18. Validate feature model (vfm)");
 		System.out.println("------------------------------------------");
 		System.out.println("21. New (n)");
 		System.out.println("22. Load (l)");
@@ -353,7 +228,6 @@ public class AbcInitSystem {
 		sl.showFeatureSupertypeRelations();
 	}
 	private static void testConfiguration() {
-		System.out.println("Option not implemented yet"); 
 	}	
 	private static void saveFeatureModel() {
 		boolean isError=false;

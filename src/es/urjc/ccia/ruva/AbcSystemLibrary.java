@@ -1,23 +1,5 @@
 package es.urjc.ccia.ruva;
-
-/*
- 	Querido colega programador:
-
-	Cuando escribí este código, sólo Dios y yo
-	sabíamos cómo funcionaba.
-
-	Ahora, ¡sólo Dios lo sabe!
-
-	Así que si está tratando de 'optimizar'
-	esta rutina y fracasa (seguramente),
-	por favor, incremente el siguiente contador
-	como una advertencia
-	para el siguiente colega:
-
- 	total_horas_perdidas_aquí
-
-*/
-
+ 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -68,7 +50,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-//import com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException;
 
 import es.us.isa.FAMA.Reasoner.QuestionTrader;
 import es.us.isa.FAMA.Reasoner.questions.NumberOfProductsQuestion;
@@ -77,7 +58,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 
 
  class AbcSystemLibrary {
-	//String connection database and declarations
 	String myDriver = "com.mysql.jdbc.Driver";
 	String myUrl = "jdbc:mysql://localhost:3306/features?autoReconnect=true&useSSL=false";
 	int gMode=1;
@@ -183,13 +163,9 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		addFeatureAuto(newFeature);
 		insertTime2 = System.nanoTime();
 		insertTimeEach = (insertTime2 - insertTime1) / 1000000000; //seconds
-		//insertTime = (insertTimeEnd - insertTimeStart) / 1000000; //milisegundos
 	    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 	    formatter = new DecimalFormat("#0.00");  
-		//gLog.add("INSERTION TIME ("+newFeature.name+") "+ String.format("%.2f", insertTimeEach) + " second(s) "+dtf.format(LocalDateTime.now()));
-		//gLog.add("");
 		System.out.println("INSERTION TIME ("+newFeature.name+") "+  String.format("%.3f", insertTimeEach) + " seconds");
-		//showFeatureModelTextDefault();
 		
 	}
 
@@ -215,9 +191,9 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			theFeature.relType="O";
 		}
 
-		//1.  Determinar donde se puede colocar la caracteristica
-		//Input: característica y supertipos
-		//Output: posibilidades (en forma de nodo y supertipos).
+		//1.  Where 
+		//Input: feature & supertypes
+		//Output: Chances (node & supertypes).
 
 		nodesToPut=getNodesToPutFeature(theFeature);
 		System.out.println("\nAvailable choices: "+nodesToPut.size());
@@ -244,14 +220,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			nodesToPut=utiles.sortArrayListMatch(hitsTN);
 		}
 
-
-		/*
-		 *  Si hay más de una opcion posible, entonces recorremos nodesToPut y en cuanto encontramos una solución válida, paramos 
-		 *  y salimos. Lo normal sería usar la primera solución salvo que incumpla las reglas, y entonces se pasaría a la segunda y así.
-		 *  
-		 *  Si sólo hay 1 soluciónn, y esta además es en el nodo raíz, insertamos ahí.
-		 *  
-		 */
  
 
 		Iterator itr2 = nodesToPut.iterator();
@@ -265,7 +233,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			String reason="";
 			Collection eTree2 = new ArrayList<TreeNode>(eTree); 
 			
-			if (nodeToCheck.idNode==1) { // caso 4.2.1. No hay supertipos compatibles
+			if (nodeToCheck.idNode==1) { // case 4.2.1. 
 
 				TreeNode newNode=new TreeNode();
 				newNode.idNode=eTree2.size()+1;
@@ -286,32 +254,15 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			} else {
 			
 			
-				// buscamos los nodos hijos del nodo del que va a colgar la nueva característica
 				RelationTree theSiblings=getDescendants(eTree, nodeToCheck.idNode);
 	
 				//3 testing solution
 				//3.1 adding feature to experimental eTree
-				System.out.println("Buscamos las relaciones que tiene el árbol en cuestión");
+				System.out.println("Searching for relations");
 				int res=0;
 	
 				
-				/*
-				 * Ahora hay que buscar los hijos del nodo en el que se va a colgar la nueva feature. Hay que comparar las relaciones
-				 * que haya (OR y XOR tendrán una feature auxiliar, el AND no). Por lo que hay que utilizar una función que nos diga 
-				 * cuántas relaciones y cuáles tiene el nodo y conocido esto, decidir CUAL será el nodo padre de la nueva característica.
-				 * 
-				 * Para ello se usará el array theSiblings.
-				 * 
-				 * Hay 2 opciones:
-				 * 
-				 *  1. Que cuelgue directamente del nodo padre.
-				 *  2. Que cuelgue del nodo auxiliar (OR y XOR)
-				 *  
-				 *  En el caso 2 hay que obtener el node-ID de ese auxfeat y usarlo para rellenar el parentnodeID de la nueva característica.
-				 *  
-				 */
-				
-				
+ 
 				/* ----------------------------- */
 				int nodeFoundId=0;
 				
@@ -331,14 +282,13 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					eTree2.add(newNode);
 					feaParentTesting=nodeToCheck.nameNode;
 					isSolution=true;
-				} else if ((theSiblings.siblingsTotal==1) ) {  // CASO 4.4.1
+				} else if ((theSiblings.siblingsTotal==1) ) {  // CASE 4.4.1
 					if ((theFeature.relSiblings.contentEquals("OR")) || (theFeature.relSiblings.contentEquals("XOR"))) {
 	
-						// 1. se crea un nodo extra para el SET
+						// 1. Creating extra node for SET 
 	
 						TreeNode newNode=new TreeNode();
 						newNode.idNode=eTree2.size()+1;
-	//					newNode.idParentNode=getParentNodeId(theSiblings.idNode,eTree);
 						newNode.idParentNode=theSiblings.idNode;					
 						feaParentTesting=getNameNode(newNode.idParentNode,eTree);
 	
@@ -357,7 +307,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							newNode.maxCardinality=1;
 							newNode.relSiblings="XOR";
 						}else {
-							System.out.println("Ha pasado algo imprevisto");
+							System.out.println("ERROR");
 						}
 						
 						newNode.level=nodeToCheck.level;
@@ -370,7 +320,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						newNode.feature.supertypes=new ArrayList<String>();
 						eTree2.add(newNode);
 						
-						// 2. se cuelga de aquí el nodo hijo anterior, para ello cambiando el idParent
 						int idExistentNode=0;
 						boolean nodeFound=false;
 						Iterator itr3 = eTree2.iterator();
@@ -383,7 +332,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						}				
 						
 						
-						// 3. se mete el nodo nuevo
 						TreeNode newNode3=new TreeNode();
 						newNode3.idNode=eTree2.size()+1;
 						newNode3.idParentNode=stor;
@@ -399,9 +347,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						eTree2.add(newNode3);	
 						isSolution=true;
 						
-						
-						// 
-					} else { // si  no es OR ni XOR, es un AND
+					} else { 
 						TreeNode newNode=new TreeNode();
 						newNode.idNode=eTree2.size()+1;
 						newNode.idParentNode=nodeToCheck.idNode;
@@ -422,7 +368,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					}
 				}  else if ((theSiblings.siblingsTotal>1) ) { 
 					
-					if ((theSiblings.rOR==0) && (theSiblings.rXOR==0)  && (theSiblings.rAND>0)) {  // CASO 4.4.2
+					if ((theSiblings.rOR==0) && (theSiblings.rXOR==0)  && (theSiblings.rAND>0)) {  // CASE 4.4.2
 						if (theFeature.relSiblings.contentEquals("AND")||theFeature.relSiblings.contentEquals("")) {
 							TreeNode newNode=new TreeNode();
 							newNode.idNode=eTree2.size()+1;
@@ -441,12 +387,11 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							isSolution=true;
 							
 						} else {
-							System.out.println("SE DESCARTA");
+							System.out.println("DISCARD");
 							reasons+="node "+ nodeToCheck.nameNode +" is AND, siblings>0, new-feature OR/XOR, must be AND or BLANK to match |";
 						}
-					} else if ((theSiblings.rOR>0) && (theSiblings.rXOR==0) && (theSiblings.rAND==0)) { //CASO 4.4.3.1
-						if (theFeature.relSiblings.contentEquals("OR")) {// nos quedamos con el id del nodo para ponerlo como padre del newNode
-							//buscamos el primer nodo que sea OR en la relación.
+					} else if ((theSiblings.rOR>0) && (theSiblings.rXOR==0) && (theSiblings.rAND==0)) { //CASE 4.4.3.1
+						if (theFeature.relSiblings.contentEquals("OR")) {
 							Iterator itr3 = theSiblings.eNodes.iterator();
 							ArrayList<RelationNode> siblingNode=new ArrayList<RelationNode>();
 							while ((nodeFoundId==0) && itr3.hasNext()) {
@@ -457,7 +402,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								}
 							}
 							if (nodeFoundId>0) {
-								// una vez encontrado se lo ponemos a parentId
 								TreeNode newNode=new TreeNode();
 								newNode.idNode=eTree2.size()+1;
 								newNode.idParentNode=nodeFoundId;
@@ -476,7 +420,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								
 								
 							}else {
-								System.out.println("no se ha encontrado nodeFoundId. Algo mal");
+								System.out.println("nodeFoundId NOT FOUND");
 							}
 						} else if (theFeature.relSiblings.contentEquals("AND"))  {
 							TreeNode newNode=new TreeNode();
@@ -495,11 +439,10 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							feaParentTesting=nodeToCheck.nameNode;
 							isSolution=true;						
 						} else {
-							System.out.println("¿qué hacemos?");
+							System.out.println("ERROR");
 						}
-					} else if ((theSiblings.rOR==0) && (theSiblings.rXOR>0) && (theSiblings.rAND==0)) { //CASO 4.4.3.2
-						if (theFeature.relSiblings.contentEquals("XOR")) {// nos quedamos con el id del nodo para ponerlo como padre del newNode
-							//buscamos el primer nodo que sea OR en la relación.
+					} else if ((theSiblings.rOR==0) && (theSiblings.rXOR>0) && (theSiblings.rAND==0)) { //CASE 4.4.3.2
+						if (theFeature.relSiblings.contentEquals("XOR")) {
 							Iterator itr3 = theSiblings.eNodes.iterator();
 							ArrayList<RelationNode> siblingNode=new ArrayList<RelationNode>();
 							while ((nodeFoundId==0) && itr3.hasNext()) {
@@ -510,7 +453,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								}
 							}
 							if (nodeFoundId>0) {
-								// una vez encontrado se lo ponemos a parentId
+								
 								TreeNode newNode=new TreeNode();
 								newNode.idNode=eTree2.size()+1;
 								newNode.idParentNode=nodeFoundId;
@@ -528,7 +471,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								isSolution=true;
 								
 							}else {
-								System.out.println("no se ha encontrado nodeFoundId. Algo mal");
+								System.out.println("nodeFoundId NOT FOUND");
 								System.exit(13);
 							}
 						} else if (theFeature.relSiblings.contentEquals("AND"))  {
@@ -548,10 +491,10 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							feaParentTesting=nodeToCheck.nameNode;
 							isSolution=true;							
 						} else {
-							System.out.println("¿qué hacemos?");
+							System.out.println("ERROR");
 						}
-					} else if ((theSiblings.rAND>0) && (theSiblings.rOR>0) && (theSiblings.rXOR==0)) { //CASO 4.4.4
-						if (theFeature.relSiblings.contentEquals("AND")) {// nos quedamos con el id del nodo para ponerlo como padre del newNode
+					} else if ((theSiblings.rAND>0) && (theSiblings.rOR>0) && (theSiblings.rXOR==0)) { //CASE 4.4.4
+						if (theFeature.relSiblings.contentEquals("AND")) {
 							TreeNode newNode=new TreeNode();
 							newNode.idNode=eTree2.size()+1;
 							newNode.idParentNode=nodeToCheck.idNode;
@@ -568,8 +511,8 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							eTree2.add(newNode);	
 							isSolution=true;
 							
-						} else if (theFeature.relSiblings.contentEquals("OR")) {// nos quedamos con el id del nodo para ponerlo como padre del newNode
-							//buscamos el primer nodo que sea OR en la relación.
+						} else if (theFeature.relSiblings.contentEquals("OR")) {
+
 							Iterator itr3 = theSiblings.eNodes.iterator();
 							ArrayList<RelationNode> siblingNode=new ArrayList<RelationNode>();
 							while ((nodeFoundId==0) && itr3.hasNext()) {
@@ -580,7 +523,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								}
 							}
 							if (nodeFoundId>0) {
-								// una vez encontrado se lo ponemos a parentId
 								TreeNode newNode=new TreeNode();
 								newNode.idNode=eTree2.size()+1;
 								newNode.idParentNode=nodeFoundId;
@@ -598,14 +540,14 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								isSolution=true;
 								
 							}else {
-								System.out.println("no se ha encontrado nodeFoundId. Algo mal");
+								System.out.println("nodeFoundId NOT FOUND");
 								System.exit(14);
 							}
 						} else {
-							System.out.println("DESCARTAMOS");
+							System.out.println("DISCARD");
 						}					
-					} else if ((theSiblings.rAND>0) && (theSiblings.rOR==0) && (theSiblings.rXOR>0)) { //CASO 4.4.4 AND & XOR
-						if (theFeature.relSiblings.contentEquals("AND")) {// nos quedamos con el id del nodo para ponerlo como padre del newNode
+					} else if ((theSiblings.rAND>0) && (theSiblings.rOR==0) && (theSiblings.rXOR>0)) { //CASE 4.4.4 AND & XOR
+						if (theFeature.relSiblings.contentEquals("AND")) {
 							TreeNode newNode=new TreeNode();
 							newNode.idNode=eTree2.size()+1;
 							newNode.idParentNode=nodeToCheck.idNode;
@@ -622,8 +564,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							eTree2.add(newNode);	
 							isSolution=true;
 							
-						} else if (theFeature.relSiblings.contentEquals("XOR")) {// nos quedamos con el id del nodo para ponerlo como padre del newNode
-							//buscamos el primer nodo que sea OR en la relación.
+						} else if (theFeature.relSiblings.contentEquals("XOR")) {
 							Iterator itr3 = theSiblings.eNodes.iterator();
 							ArrayList<RelationNode> siblingNode=new ArrayList<RelationNode>();
 							while ((nodeFoundId==0) && itr3.hasNext()) {
@@ -634,7 +575,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								}
 							}
 							if (nodeFoundId>0) {
-								// una vez encontrado se lo ponemos a parentId
 								TreeNode newNode=new TreeNode();
 								newNode.idNode=eTree2.size()+1;
 								newNode.idParentNode=nodeFoundId;
@@ -652,15 +592,14 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								isSolution=true;
 								
 							}else {
-								System.out.println("no se ha encontrado nodeFoundId. Algo mal");
+								System.out.println(" nodeFoundId NOT FOUND");
 							}
 						} else {
-							System.out.println("DESCARTAMOS");
+							System.out.println("DISCARD");
 							reasons+="node "+ nodeToCheck.nameNode +" has AND+XOR relations, siblings>0, new-feature type found is "+theFeature.relType+", must be AND or XOR  to match |";
 						}					
-					} else if ((theSiblings.rAND==0) && (theSiblings.rOR>0) && (theSiblings.rXOR>0)) { //CASO 4.4.4 - OR & XOR 
-						if (theFeature.relSiblings.contentEquals("XOR")) { //CASO 4.4.4 - OR & XOR - XOR
-							//buscamos el primer nodo que sea OR en la relación.
+					} else if ((theSiblings.rAND==0) && (theSiblings.rOR>0) && (theSiblings.rXOR>0)) { //CASE 4.4.4 - OR & XOR 
+						if (theFeature.relSiblings.contentEquals("XOR")) { //CASE 4.4.4 - OR & XOR - XOR
 							Iterator itr3 = theSiblings.eNodes.iterator();
 							ArrayList<RelationNode> siblingNode=new ArrayList<RelationNode>();
 							while ((nodeFoundId==0) && itr3.hasNext()) {
@@ -671,7 +610,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								}
 							}
 							if (nodeFoundId>0) {
-								// una vez encontrado se lo ponemos a parentId
 								TreeNode newNode=new TreeNode();
 								newNode.idNode=eTree2.size()+1;
 								newNode.idParentNode=nodeFoundId;
@@ -690,10 +628,9 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								isSolution=true;
 								
 							}else {
-								System.out.println("no se ha encontrado nodeFoundId. Algo mal");
+								System.out.println("Not Found nodeFoundId. Error");
 							}	
-						} else if (theFeature.relSiblings.contentEquals("OR")) {  //CASO 4.4.4 - OR & XOR - OR
-							//buscamos el primer nodo que sea OR en la relación.
+						} else if (theFeature.relSiblings.contentEquals("OR")) {  //CASE 4.4.4 - OR & XOR - OR
 							Iterator itr3 = theSiblings.eNodes.iterator();
 							ArrayList<RelationNode> siblingNode=new ArrayList<RelationNode>();
 							while ((nodeFoundId==0) && itr3.hasNext()) {
@@ -704,7 +641,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								}
 							}
 							if (nodeFoundId>0) {
-								// una vez encontrado se lo ponemos a parentId
 								TreeNode newNode=new TreeNode();
 								newNode.idNode=eTree2.size()+1;
 								newNode.idParentNode=nodeFoundId;
@@ -722,7 +658,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								eTree2.add(newNode);	
 								isSolution=true;
 							}else {
-								System.out.println("no se ha encontrado nodeFoundId. Algo mal");
+								System.out.println("Not Found nodeFoundId. Error");
 							}
 						} else if (theFeature.relSiblings.contentEquals("AND")) { // 4.4.4 - OR & XOR - AND
 							TreeNode newNode=new TreeNode();
@@ -741,11 +677,11 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							eTree2.add(newNode);	
 							isSolution=true;						
 						} else {
-							System.out.println("DESCARTAMOS");
+							System.out.println("DISCARD");
 							reasons+="node "+ nodeToCheck.nameNode +" has OR+XOR relations, siblings>0, new-feature type found is "+theFeature.relType+", must be AND, OR or XOR  to match |";
 						}					
-					} else if ((theSiblings.rAND>0) &&(theSiblings.rOR>0) && (theSiblings.rXOR>0)) { //CASO 4.4.4 - AND & OR
-						if (theFeature.relSiblings.contentEquals("AND")) {// nos quedamos con el id del nodo para ponerlo como padre del newNode
+					} else if ((theSiblings.rAND>0) &&(theSiblings.rOR>0) && (theSiblings.rXOR>0)) { //CASE 4.4.4 - AND & OR
+						if (theFeature.relSiblings.contentEquals("AND")) {
 							TreeNode newNode=new TreeNode();
 							newNode.idNode=eTree2.size()+1;
 							newNode.idParentNode=nodeToCheck.idNode;
@@ -763,8 +699,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							eTree2.add(newNode);
 							isSolution=true;
 							
-						} else if (theFeature.relSiblings.contentEquals("XOR")) {// nos quedamos con el id del nodo para ponerlo como padre del newNode
-							//buscamos el primer nodo que sea OR en la relación.
+						} else if (theFeature.relSiblings.contentEquals("XOR")) {
 							Iterator itr3 = theSiblings.eNodes.iterator();
 							ArrayList<RelationNode> siblingNode=new ArrayList<RelationNode>();
 							while ((nodeFoundId==0) && itr3.hasNext()) {
@@ -775,7 +710,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								}
 							}
 							if (nodeFoundId>0) {
-								// una vez encontrado se lo ponemos a parentId
+								
 								TreeNode newNode=new TreeNode();
 								newNode.idNode=eTree2.size()+1;
 								newNode.idParentNode=nodeFoundId;
@@ -794,10 +729,9 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								isSolution=true;
 								
 							}else {
-								System.out.println("no se ha encontrado nodeFoundId. Algo mal");
+								System.out.println("Not Found nodeFoundId. Error");
 							}	
-						} else if (theFeature.relSiblings.contentEquals("OR")) {// nos quedamos con el id del nodo para ponerlo como padre del newNode
-							//buscamos el primer nodo que sea OR en la relación.
+						} else if (theFeature.relSiblings.contentEquals("OR")) {
 							Iterator itr3 = theSiblings.eNodes.iterator();
 							ArrayList<RelationNode> siblingNode=new ArrayList<RelationNode>();
 							while ((nodeFoundId==0) && itr3.hasNext()) {
@@ -808,7 +742,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								}
 							}
 							if (nodeFoundId>0) {
-								// una vez encontrado se lo ponemos a parentId
+								
 								TreeNode newNode=new TreeNode();
 								newNode.idNode=eTree2.size()+1;
 								newNode.idParentNode=nodeFoundId;
@@ -827,15 +761,15 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								isSolution=true;
 								
 							}else {
-								System.out.println("no se ha encontrado nodeFoundId. Algo mal");
+								System.out.println("Not Found nodeFoundId. Error");
 								System.exit(15);
 							}
 						} else {
-							System.out.println("DESCARTAMOS");
+							System.out.println("DISCARD");
 						}						
 							
 					} else {
-						System.out.println("Caso no contemplado");
+						System.out.println("CASE MISSING");
 		
 					}
 					/* ----------------------------- */
@@ -855,8 +789,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				VariabilityModel fm = qt.openFile("fm/famatemp.fm");
 				qt.setVariabilityModel(fm);
 				
-	//			
-	
+
 				// 4.3. Check consistency
 				try { 
 					ValidQuestion vq = (ValidQuestion) qt.createQuestion("Valid");
@@ -883,7 +816,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					resul=false;
 				}
 			}else {
-				System.out.println("SOLUCION DESCARTADA "+numIter+" "+nodeToCheck.nameNode);
+				System.out.println("DISCARDED SOLUTION "+numIter+" "+nodeToCheck.nameNode);
 				resul=false;
 			}
 		} 
@@ -891,7 +824,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			totalSuccess++;
 			gLog.add(theFeature.name+" - adding - 1 SUCCESS - Feature "+theFeature.name+" inserted under "+feaParentTesting+" - Solution:"+numIter+"/"+nodesToPut.size());
 		}else {
-//			System.out.println("NINGUNA SOLUCION VIABLE");
 			totalFailures++;
 			gLog.add(theFeature.name+" - adding - 0 FAILURE - Feature "+theFeature.name + " | Reasons: "+ reasons);
 		}
@@ -924,15 +856,15 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		int levelFound=0;
 		Iterator<TreeNode> it = eTree.iterator();
 
-		boolean hayMas=false;
-		hayMas=it.hasNext();
-		while (hayMas) {
+		boolean foundMore=false;
+		foundMore=it.hasNext();
+		while (foundMore) {
 			TreeNode theTreeNode=it.next();
 			levelFound=theTreeNode.level;
 			if (levelFound>maxLevel) {
 				maxLevel=levelFound;
 			}
-			hayMas=it.hasNext();
+			foundMore=it.hasNext();
 
 		}	
 		this.maxLevel=maxLevel;
@@ -954,7 +886,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			String line = reader.readLine();
 			line=line.trim();
 			while (line != null) {
-				//System.out.println(line);
 				if (line.length()>0) {
 					textCSV.add(line);
 				}
@@ -977,9 +908,9 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		String[] myRelConInChunks;	
 		String rela="";
 		String manda="";
-		String frase="";
-		Stack pilaRel=new Stack();		
-		Stack pilaPadres=new Stack();
+		String thePhrase="";
+		Stack relStack=new Stack();		
+		Stack parentsStack=new Stack();
 		
 		String myFieldPrev="";
 		String myParentPrev="";
@@ -991,11 +922,11 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		String myValuePrev="";
 		String[] myRelConInChunksPrev;		
 		int tabulation=0;
-		String topePila="";
+		String topStack="";
 		String value="";
 		
-		pilaRel.push("NADA");
-		pilaPadres.push("NADA");
+		relStack.push("NOTHING");
+		parentsStack.push("NOTHING");
 		
 		
 		//3. converting
@@ -1030,7 +961,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			while ((!isEnd) && (!isLine)) {
 				line=textCSV.get(x).trim();
 				lineCounter++;
-				System.out.println("Linea "+lineCounter+":"+line);
+				System.out.println("Line "+lineCounter+":"+line);
 	
 				if ((line.length()>0) && (lineCounter>1)) {
 					isLine=true;
@@ -1042,7 +973,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			}
 			line=line+"EOF";
 			if (isLine) {
-				// descomponemos linea
 				rela="";
 				manda="";
 				String[] lineChunks=line.split(";");
@@ -1068,16 +998,16 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					}
 					
 					if (!isOntology) {
-						topePila=(String) pilaPadres.peek();
-						while (!myParent.contentEquals(topePila) && pilaPadres.size()>1) {
+						topStack=(String) parentsStack.peek();
+						while (!myParent.contentEquals(topStack) && parentsStack.size()>1) {
 							String relac="";
-							pilaPadres.pop();
-							relac=(String) pilaRel.pop();
-							frase="</"+relac+">";
+							parentsStack.pop();
+							relac=(String) relStack.pop();
+							thePhrase="</"+relac+">";
 							tabulation--;
 							repeatedLine=new String(new char[tabulation]).replace("\0", " ");						
-							textXML.add(repeatedLine+frase);
-							topePila=(String) pilaPadres.peek();
+							textXML.add(repeatedLine+thePhrase);
+							topStack=(String) parentsStack.peek();
 		 				
 						}	
 						if (myLogicalRelType.length()>0) {
@@ -1090,10 +1020,10 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							} else if (myRelationshipType.contentEquals("consistsof")) {
 								rela="cons";
 							} else {
-								System.out.println("ERRORRR");
+								System.out.println("ERROR");
 							}
-							pilaPadres.add(myField);
-							pilaRel.add(rela);
+							parentsStack.add(myField);
+							relStack.add(rela);
 							
 							if (myProperty.contentEquals("mandatory")) {
 								manda=" mandatory=\"true\" ";
@@ -1105,9 +1035,9 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							} else  {
 								value="";
 							}
-							frase="<"+rela+manda+" name=\""+myField+"\" "+value+">";
+							thePhrase="<"+rela+manda+" name=\""+myField+"\" "+value+">";
 							repeatedLine=new String(new char[tabulation]).replace("\0", " ");						
-							textXML.add(repeatedLine+frase);
+							textXML.add(repeatedLine+thePhrase);
 							tabulation++;					
 						}else {
 							if (myProperty.contentEquals("mandatory")) {
@@ -1124,9 +1054,9 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								value="";
 							}
 		
-							frase="<feature "+manda+"name=\""+myField+"\""+value+"/>";
+							thePhrase="<feature "+manda+"name=\""+myField+"\""+value+"/>";
 							repeatedLine=new String(new char[tabulation]).replace("\0", " ");						
-							textXML.add(repeatedLine+frase);
+							textXML.add(repeatedLine+thePhrase);
 						}
 									
 					
@@ -1169,14 +1099,14 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				}		
 			}
 		}
-		while (pilaRel.size()>1) {
+		while (relStack.size()>1) {
 			String relac="";
-			pilaPadres.pop();
-			relac=(String) pilaRel.pop();
-			frase="</"+relac+">";
+			parentsStack.pop();
+			relac=(String) relStack.pop();
+			thePhrase="</"+relac+">";
 			tabulation--;
 			repeatedLine=new String(new char[tabulation]).replace("\0", " ");						
-			textXML.add(repeatedLine+frase);			
+			textXML.add(repeatedLine+thePhrase);			
 		}
 		
 		textRules.add("</constraints>");
@@ -1190,7 +1120,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		}
 		textXML.add("</featureModel>");			
  
-		//4. writeing
+		//4. writing
 		writeFile(target,textXML);
 		return resul;		
 	}
@@ -1211,7 +1141,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			String line = reader.readLine();
 			line=line.trim();
 			while (line != null) {
-				//System.out.println(line);
 				if (line.length()>0) {
 					textCSV.add(line);
 				}
@@ -1234,9 +1163,9 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		String[] myRelConInChunks;	
 		String rela="";
 		String manda="";
-		String frase="";
-		Stack pilaRel=new Stack();		
-		Stack pilaPadres=new Stack();
+		String thePhrase="";
+		Stack relStack=new Stack();		
+		Stack parentsStack=new Stack();
 		
 		String myFieldPrev="";
 		String myParentPrev="";
@@ -1248,11 +1177,11 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		String myValuePrev="";
 		String[] myRelConInChunksPrev;		
 		int tabulation=0;
-		String topePila="";
+		String topStack="";
 		String value="";
 		
-		pilaRel.push("NADA");
-		pilaPadres.push("NADA");
+		relStack.push("NOTHING");
+		parentsStack.push("NOTHING");
 		
 		
 		//3. converting
@@ -1284,7 +1213,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			while ((!isEnd) && (!isLine)) {
 				line=textCSV.get(x).trim();
 				lineCounter++;
-				System.out.println("Linea "+lineCounter+":"+line);
+				System.out.println("Line "+lineCounter+":"+line);
 	
 				if ((line.length()>0) && (lineCounter>1)) {
 					isLine=true;
@@ -1314,15 +1243,15 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						myRelConInChunks=myRelConIn.split(",");
 					}
 				}
-				topePila=(String) pilaPadres.peek();
-				if (!myParent.contentEquals(topePila) && pilaPadres.size()>1) {
+				topStack=(String) parentsStack.peek();
+				if (!myParent.contentEquals(topStack) && parentsStack.size()>1) {
 					String relac="";
-					pilaPadres.pop();
-					relac=(String) pilaRel.pop();
-					frase="</"+relac+">";
+					parentsStack.pop();
+					relac=(String) relStack.pop();
+					thePhrase="</"+relac+">";
 					tabulation--;
 					repeatedLine=new String(new char[tabulation]).replace("\0", " ");						
-					textXML.add(repeatedLine+frase);
+					textXML.add(repeatedLine+thePhrase);
 				}
 				
 
@@ -1353,10 +1282,10 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					} else if (myLogicalRelType.contentEquals("xor")) {
 						rela="alt";
 					} else {
-						System.out.println("ERRORRR");
+						System.out.println("ERROR");
 					}
-					pilaPadres.add(myField);
-					pilaRel.add(rela);
+					parentsStack.add(myField);
+					relStack.add(rela);
 					
 					if (myProperty.contentEquals("mandatory")) {
 						manda=" mandatory=\"true\" ";
@@ -1369,9 +1298,9 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						value="";
 					}
 				
-					frase="<"+rela+manda+" name=\""+myField+"\" "+value+">";
+					thePhrase="<"+rela+manda+" name=\""+myField+"\" "+value+">";
 					repeatedLine=new String(new char[tabulation]).replace("\0", " ");						
-					textXML.add(repeatedLine+frase);
+					textXML.add(repeatedLine+thePhrase);
 					tabulation++;
 				
 				} else {
@@ -1387,9 +1316,9 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						value="";
 					}
 
-					frase="<feature "+manda+"name=\""+myField+"\""+value+"/>";
+					thePhrase="<feature "+manda+"name=\""+myField+"\""+value+"/>";
 					repeatedLine=new String(new char[tabulation]).replace("\0", " ");						
-					textXML.add(repeatedLine+frase);
+					textXML.add(repeatedLine+thePhrase);
 				}
 								
 				myFieldPrev=myField;
@@ -1403,14 +1332,14 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						
 			}
 		}
-		while (pilaRel.size()>1) {
+		while (relStack.size()>1) {
 			String relac="";
-			pilaPadres.pop();
-			relac=(String) pilaRel.pop();
-			frase="</"+relac+">";
+			parentsStack.pop();
+			relac=(String) relStack.pop();
+			thePhrase="</"+relac+">";
 			tabulation--;
 			repeatedLine=new String(new char[tabulation]).replace("\0", " ");						
-			textXML.add(repeatedLine+frase);			
+			textXML.add(repeatedLine+thePhrase);			
 		}
 		
 		textRules.add("</constraints>");
@@ -1424,7 +1353,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		}
 		textXML.add("</featureModel>");			
  
-		//4. writeing
+		//4. writing
 		writeFile(target,textXML);
 		return resul;		
 		
@@ -1442,19 +1371,18 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			reader = new BufferedReader(new FileReader(pathScript));
 			String line = reader.readLine();
 			while (line != null) {
-				//System.out.println(line);
 				myFile.add(line);
 				line = reader.readLine();
 			}
 			reader.close();
 		} catch (IOException e) {
-			System.out.println("Fichero no existe: "+pathScript);
+			System.out.println("FILE NOT FOUND: "+pathScript);
 			System.exit(20);
 		}		
 		return myFile;			
 	}
 	 
-	void generateAddFeatureSet(int sizeSet, int supertypeSet, int maxSupertypes, String fichero) {
+	void generateAddFeatureSet(int sizeSet, int supertypeSet, int maxSupertypes, String theFile) {
 		ArrayList<String> gSet=new ArrayList<String>();
 		int num1=0;
 		int fx=0;
@@ -1464,7 +1392,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		String phrase="";
 		
 		if (sizeSet<1) {
-			System.out.println("El valor tiene que ser mayor que 0. Ha llegado: " + sizeSet);
+			System.out.println("Value must be greater than 0. Received: " + sizeSet);
 			System.exit(38);
 		}
 		
@@ -1502,7 +1430,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				} else if (answer2==2) {
 					theRel="XOR";
 				} else {
-					System.out.println("random raro: "+answer2);
+					System.out.println("random: "+answer2);
 				}
 				
 			}	
@@ -1535,42 +1463,37 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		gSet.add("FLUSH_LOG");
 		
 		
-		writeFile(fichero,gSet);
-		gLog.add("Generated AddFeature SET: "+fichero);
+		writeFile(theFile,gSet);
+		gLog.add("Generated AddFeature SET: "+theFile);
 	}
 
 	 void generateFM() {
-		FileWriter fichero = null;
+		FileWriter theFile = null;
 		PrintWriter pw = null;
 		try
 		{
-			fichero = new FileWriter("featuremodel.fm");
-			pw = new PrintWriter(fichero);
+			theFile = new FileWriter("featuremodel.fm");
+			pw = new PrintWriter(theFile);
 
 			String linea="";
 
-			//RELACIONES
 			pw.println("%Relationships\n");
-			// RECORREMOS ARBOL Y PARA CADA NODO, COLOCAMOS UNA LINEA EN ESTE FORMATO:
-			// NOMBRE: CARACTERISTICAS [OPCIONALES];
-			int numNodos=0;
-			int numReglas=0;
+			int numNodes=0;
+			int numConstraints=0;
 			int theLevel=0;
 			int theNode=0;
-			String salidaAcum="";
-			salidaAcum=iterateNodes(eTree, theLevel, theNode,salidaAcum);
-			pw.println(salidaAcum);
+			String acumStringAcum="";
+			acumStringAcum=iterateNodes(eTree, theLevel, theNode,acumStringAcum);
+			pw.println(acumStringAcum);
 
-			//REGLAS
+			//CONSTRAINTS
 			pw.println("%Constraints\n");
-			// RECORREMOS ARBOL Y PARA CADA NODO, COLOCAMOS UNA LINEA EN ESTE FORMATO:
-			// NOMBRE: CARACTERISTICAS [OPCIONALES];
-			for (int i = 0; i < numReglas; i++) {
+			for (int i = 0; i < numConstraints; i++) {
 				pw.println("Linea " + i);
 			}
 
 
-			//SUPERTIPOS
+			//SUPERTYPES
 			pw.println("%Supertypes\n");
 
 
@@ -1579,10 +1502,8 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			e.printStackTrace();
 		} finally {
 			try {
-				// Nuevamente aprovechamos el finally para 
-				// asegurarnos que se cierra el fichero.
-				if (null != fichero)
-					fichero.close();
+				if (null != theFile)
+					theFile.close();
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
@@ -1602,7 +1523,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		Queue t=new LinkedList();
 		boolean isFound=false;
 		Iterator<TreeNode> it = inputTree.iterator();
-		boolean hayMas=false;
+		boolean foundMore=false;
 		String theFeature="";
 		int theIdNode=0;
 		String subject="";
@@ -1615,7 +1536,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		fmFile.clear();
 		fmFile.add("%Relationships");
 
-		hayMas=it.hasNext();
+		foundMore=it.hasNext();
 		TreeNode theTreeNode=it.next();
 		String firstFeature=theTreeNode.nameFeature;
 		s.add(firstFeature);
@@ -1628,13 +1549,13 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				theIdNode=(int) t.remove();
 				subject=theFeature;
 				it = inputTree.iterator();
-				hayMas=it.hasNext();
+				foundMore=it.hasNext();
 				Queue predi=new LinkedList();
 				String cad="";
 				int carMin=0;
 				int carMax=0;
 				String theFeatSet="";
-				while (hayMas) {
+				while (foundMore) {
 					theTreeNode=it.next();
 					String theRelType=theTreeNode.relType;
 					String theRelSiblings=theTreeNode.relSiblings;
@@ -1650,9 +1571,9 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							int nodoPadre2=0;
 							nodoPadre2=theTreeNode.idNode;
 							Iterator<TreeNode> it2 = inputTree.iterator();
-							boolean hayMas2=false;
-							hayMas2=it2.hasNext();
-							while (hayMas2) {
+							boolean foundMore2=false;
+							foundMore2=it2.hasNext();
+							while (foundMore2) {
 								TreeNode theTreeNode2=it2.next();
 								int elNodo=theTreeNode2.idParentNode;
 								if (elNodo==nodoPadre2) {
@@ -1661,7 +1582,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 									t.add(theTreeNode2.idNode);
 								}
 								if (!it2.hasNext()) {
-									hayMas2=false;
+									foundMore2=false;
 								}
 							}
 							theFeatSet=theFeatSet.substring(1);
@@ -1682,7 +1603,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							System.exit(17);
 						}
 					}
-					hayMas=it.hasNext();
+					foundMore=it.hasNext();
 				}
 				predicate="";
 				while (predi.size()>0) {
@@ -1703,13 +1624,13 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		// 2 CONSTRAINTS
 
 		Iterator<Constraint> it3 = eConstraints.iterator();
-		boolean hayMas2=false;
-		boolean hayMas3=it3.hasNext();
-		if (hayMas3) {
+		boolean foundMore2=false;
+		boolean foundMore3=it3.hasNext();
+		if (foundMore3) {
 			fmFile.add("");
 			fmFile.add("%Constraints");
 		}
-		while (hayMas3) {
+		while (foundMore3) {
 			String lit="";
 			Constraint theConstraint=it3.next();
 			switch (theConstraint.relationType) {
@@ -1723,37 +1644,36 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				lit=theConstraint.featureSubject+" IMPLIES "+theConstraint.featurePredicate+";";
 				break;
 			default:
-				System.out.println("Aquí ha pasado algo extraño. Hay una condición que no debería estar."); 
+				System.out.println("CONDITION MISMATCH."); 
 				break;
 			}
 			fmFile.add(lit);
 
 			if (!it3.hasNext()) {
-				hayMas3=false;
+				foundMore3=false;
 			}
 		}
 
 		// 3 %ATTRIBUTES
 
 		Iterator<String> it4 = eAttributes.iterator();
-		boolean hayMas4=it4.hasNext();
-		if (hayMas4) {
+		boolean foundMore4=it4.hasNext();
+		if (foundMore4) {
 			fmFile.add("");
 			fmFile.add("%Attributes");
 		}
-		while (hayMas4) {
+		while (foundMore4) {
 			String lit="";
 			String theAttribute=it4.next();
 			fmFile.add(theAttribute);
 			if (!it4.hasNext()) {
-				hayMas4=false;
+				foundMore4=false;
 			}
 		}
 
 
 
 		if (mode==1) { 
-			// FICHERO MODO MEJORADO = 1
 			// 3 SUPERTYPES
 			Iterator itr = inputTree.iterator();
 			String fea="";
@@ -1779,7 +1699,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						}
 					}
 				} catch (Exception e) {
-					System.out.println(fea+" Nodo sin supertipos");
+					System.out.println(fea+" Node with no supertypes");
 				}
 
 			}
@@ -1811,7 +1731,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		Queue t=new LinkedList();
 		boolean isFound=false;
 		Iterator<TreeNode> it = inputTree.iterator();
-		boolean hayMas=false;
+		boolean foundMore=false;
 		String theFeature="";
 		int theIdNode=0;
 		String subject="";
@@ -1824,7 +1744,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		fmFile.clear();
 		fmFile.add("%Relationships");
 
-		hayMas=it.hasNext();
+		foundMore=it.hasNext();
 		TreeNode theTreeNode=it.next();
 		String firstFeature=theTreeNode.nameFeature;
 		s.add(firstFeature);
@@ -1837,13 +1757,13 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				theIdNode=(int) t.remove();
 				subject=theFeature;
 				it = inputTree.iterator();
-				hayMas=it.hasNext();
+				foundMore=it.hasNext();
 				Queue predi=new LinkedList();
 				String cad="";
 				int carMin=0;
 				int carMax=0;
 				String theFeatSet="";
-				while (hayMas) {
+				while (foundMore) {
 					theTreeNode=it.next();
 					String theRelType=theTreeNode.relType;
 					String theRelSiblings=theTreeNode.relSiblings;
@@ -1859,9 +1779,9 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							int nodoPadre2=0;
 							nodoPadre2=theTreeNode.idNode;
 							Iterator<TreeNode> it2 = inputTree.iterator();
-							boolean hayMas2=false;
-							hayMas2=it2.hasNext();
-							while (hayMas2) {
+							boolean foundMore2=false;
+							foundMore2=it2.hasNext();
+							while (foundMore2) {
 								TreeNode theTreeNode2=it2.next();
 								int elNodo=theTreeNode2.idParentNode;
 								if (elNodo==nodoPadre2) {
@@ -1870,7 +1790,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 									t.add(theTreeNode2.idNode);
 								}
 								if (!it2.hasNext()) {
-									hayMas2=false;
+									foundMore2=false;
 								}
 							}
 							theFeatSet=theFeatSet.substring(1);
@@ -1891,7 +1811,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							System.exit(17);
 						}
 					}
-					hayMas=it.hasNext();
+					foundMore=it.hasNext();
 				}
 				predicate="";
 				while (predi.size()>0) {
@@ -1912,13 +1832,13 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		// 2 CONSTRAINTS
 
 		Iterator<Constraint> it3 = eConstraints.iterator();
-		boolean hayMas2=false;
-		boolean hayMas3=it3.hasNext();
-		if (hayMas3) {
+		boolean foundMore2=false;
+		boolean foundMore3=it3.hasNext();
+		if (foundMore3) {
 			fmFile.add("");
 			fmFile.add("%Constraints");
 		}
-		while (hayMas3) {
+		while (foundMore3) {
 			String lit="";
 			Constraint theConstraint=it3.next();
 			switch (theConstraint.relationType) {
@@ -1932,38 +1852,36 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				lit=theConstraint.featureSubject+" IMPLIES "+theConstraint.featurePredicate+";";
 				break;
 			default:
-				System.out.println("Aquí ha pasado algo extraño. Hay una condición que no debería estar."); 
+				System.out.println("RELATION NOT EXPECTED."); 
 				break;
 			}
 			fmFile.add(lit);
 
 			if (!it3.hasNext()) {
-				hayMas3=false;
+				foundMore3=false;
 			}
 		}
 
 		// 3 %ATTRIBUTES
 
 		Iterator<String> it4 = eAttributes.iterator();
-		boolean hayMas4=it4.hasNext();
-		if (hayMas4) {
+		boolean foundMore4=it4.hasNext();
+		if (foundMore4) {
 			fmFile.add("");
 			fmFile.add("%Attributes");
 		}
-		while (hayMas4) {
+		while (foundMore4) {
 			String lit="";
 			String theAttribute=it4.next();
 			fmFile.add(theAttribute);
 			if (!it4.hasNext()) {
-				hayMas4=false;
+				foundMore4=false;
 			}
 		}
 
 
 
 		if (mode==1) { 
-			// FICHERO MODO MEJORADO = 1
-			// 3 SUPERTYPES
 			Iterator itr = inputTree.iterator();
 			String fea="";
 			String sup="";
@@ -1988,7 +1906,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						}
 					}
 				} catch (Exception e) {
-					System.out.println(fea+" Nodo sin supertipos");
+					System.out.println(fea+" Node with no supertypes");
 				}
 
 			}
@@ -2009,18 +1927,16 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 	}	
 	
 	RelationTree getDescendants(Collection eTree, int idNode) {
-		//loop por los nodos del arbol eTree
 		RelationTree eDescendants=new RelationTree();
 		eDescendants.idNode=idNode;
 		eDescendants.nameNode=getNameNode(idNode,eTree);
 		int andNodesCounter=0;
 		int descendants=0;
 		TreeNode theNode=new TreeNode();
-		//Collection eDescendants=new ArrayList<TreeNode>();
 		for (Iterator<TreeNode> it = eTree.iterator(); it.hasNext();) {
-			TreeNode actualNode=it.next(); // cursor que recorre el árbol
-			if (actualNode.idParentNode==idNode) { // si actualNode es hijo de idNode, procesamos actualNode
-				if (actualNode.type.contentEquals("SET")) { //si es variable auxiliar (SET), comprobamos y sumamos totales
+			TreeNode actualNode=it.next(); 
+			if (actualNode.idParentNode==idNode) {
+				if (actualNode.type.contentEquals("SET")) {
 					RelationNode elNodo=new RelationNode();
 					elNodo.idNode=actualNode.idNode;
 					if ((actualNode.minCardinality==1) && (actualNode.maxCardinality==1)) { // XOR
@@ -2030,8 +1946,8 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						eDescendants.rOR++;
 						elNodo.relSiblings="OR";
 					}
-					for (Iterator<TreeNode> it2 = eTree.iterator(); it2.hasNext();) { //sumamos los nodos que encontremos por debajo del SET
-						TreeNode actualNode2=it2.next(); //contenido del cursor que apunta
+					for (Iterator<TreeNode> it2 = eTree.iterator(); it2.hasNext();) { 
+						TreeNode actualNode2=it2.next();
 						if (actualNode2.idParentNode==actualNode.idNode) { 
 							descendants++;
 						}
@@ -2040,17 +1956,17 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					
 					
 					eDescendants.eNodes.add(elNodo);	
-				} else { //si no es SET, es un AND (no lleva nodo AUX
+				} else { 
 					andNodesCounter++;
 					descendants++;
 					
 				}
 				
-			} else { // si no es hijo suyo, no hacemos nada
+			} else { 
 				
 			}
 		}
-		if (andNodesCounter>0) { // si hay más de un nodo en el AND, hay posibilidades de añadir otro como hermano. En ese caso el padre es el mismo nodo
+		if (andNodesCounter>0) { 
 			eDescendants.rAND=1;
 		}
 		eDescendants.siblingsTotal=descendants;
@@ -2071,12 +1987,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				found=true;
 			}
 		}
-		/*
-		if (!found) { //no hay hijos
-			String nameNode=getNameNode(idNode,eTree);
-			base.add(nameNode);
-		}
-		*/
 		return base;
 	}
 	int getMaxDifferentSupertypesInNode(Collection eTree) {
@@ -2084,7 +1994,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		int amount=0;
 		Iterator itr = eTree.iterator();
 		while (itr.hasNext()) {
-//			System.out.println("Loc "+ loc);
 			TreeNode tn=(TreeNode) itr.next();
 			Feature theFeature=tn.feature;
 			amount=theFeature.supertypes.size();
@@ -2124,19 +2033,19 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 	}	
 	double getAverageBranchingFactor(Collection eTree) {
 		double ratio=0;
-		int suma=0;
+		int theSum=0;
 		int numNodes=0;
 		Iterator itr = eTree.iterator();
 		while (itr.hasNext()) {
 			TreeNode tn=(TreeNode) itr.next();
-			suma=suma+tn.totChildren;
+			theSum=theSum+tn.totChildren;
 			if (tn.type.contentEquals("BASIC")) {
 				numNodes++;
 			} else {
-				suma--;
+				theSum--;
 			}
 		}		
-		ratio=Double.valueOf(suma)/Double.valueOf(numNodes);
+		ratio=Double.valueOf(theSum)/Double.valueOf(numNodes);
 		return ratio;
 	}	
 	int getMaxBranchingFactor(Collection eTree) {
@@ -2324,37 +2233,29 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 	 }
 
 	 Collection getNodesToPutFeature(Feature theFeature) {
-		ArrayList<Integer> eCompatibleFeatures = new ArrayList<Integer>();    //características que son compatibles
-		Collection<TreeNode> eCompatibleNodes = new ArrayList<TreeNode>();    //nodos donde se puede colgar la nueva característica
-		ArrayList<String> eCompatibleSupertypes = new ArrayList<String>();    //supertipos que resultan compatibles ¿¿??
-		ArrayList<String> listSupertypesNewFeature = new ArrayList<String>();    //list of supertypes of theFeature (input)
+		ArrayList<Integer> eCompatibleFeatures = new ArrayList<Integer>();
+		Collection<TreeNode> eCompatibleNodes = new ArrayList<TreeNode>();
+		ArrayList<String> eCompatibleSupertypes = new ArrayList<String>();
+		ArrayList<String> listSupertypesNewFeature = new ArrayList<String>();
 		//Get supertypes of idFeature
 		listSupertypesNewFeature=theFeature.supertypes;
 		int counterLoop=0;
-		/*
-		 * loop triple anidado por los nodos del arbol eTree (1). Para cada nodo del árbol se obtienen los supertipos (2) 
-		 * y se compara cada uno con cada uno de los que trae theFeature, y en caso de que coincida alguno, se incrementa matchCounter. 
-		 * 
-		 * Si cuando acabe de recorrer el bucle principal for resulta que eCompatibleNodes es 0, significa que no ningún nodo tiene
-		 * supertipos compatibles, así que la única posibilidad es que vaya al raíz.
-		 */
 		
 		for (Iterator<TreeNode> it = eTree.iterator(); it.hasNext();) {
 			counterLoop++;
 			int matchCounter=0;
-			TreeNode actualNode=it.next(); // cursor del bucle
+			TreeNode actualNode=it.next();
 			actualNode.match=0; 
 			System.out.println(actualNode.nameFeature);
-			ArrayList<String> listSupertypesTreeNode=new ArrayList<String>(); //variable para guardar los supertipos del nodo
-			listSupertypesTreeNode=actualNode.feature.supertypes;  //se guardan
+			ArrayList<String> listSupertypesTreeNode=new ArrayList<String>();
+			listSupertypesTreeNode=actualNode.feature.supertypes; 
 
-			//loop por los supertipos del nodo TreeNode (listSupertypesTreeNode
 			Iterator it2 = listSupertypesTreeNode.iterator();
 			while (it2.hasNext()) {
 				String stNodo;
 				stNodo=(String) it2.next();
 				Iterator it3 = listSupertypesNewFeature.iterator();
-				while (it3.hasNext()) { //loop por los supertipos de la Feature a añadir
+				while (it3.hasNext()) { 
 					String stNuevo;
 					stNuevo=(String) it3.next();
 					if (stNuevo.equals(stNodo)) {
@@ -2492,6 +2393,24 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		}		
 		return isFound;
 	}
+	boolean isFeatureInConstraints(String featName, Collection eConstraints) {
+		boolean isFound=false;
+		Iterator<Constraint> it3 = eConstraints.iterator();
+		boolean foundMore=it3.hasNext();
+		while ((!isFound)&&(foundMore)) {
+			Constraint theConstraint=it3.next();
+			if (featName.contentEquals(theConstraint.featureSubject)) {
+				isFound=true;
+			}
+			if (featName.contentEquals(theConstraint.featureSubject)) {
+				isFound=true;
+			}
+			if (!it3.hasNext()) {
+				foundMore=false;
+			}
+		}		
+		return isFound;
+	}	
 	 boolean isAncestor(String featureTarget,String featureSource, Collection eTreeCheck) {
 		boolean isFound=false;
 		boolean rootNodeReached=false;
@@ -2526,7 +2445,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		String theLine="--";
 		String repeatedLine="";
 		String separator="";
-		String salida="";
+		String acumString="";
 		String theRest="";
 		String prefix="";
 		String suffix=""; 
@@ -2547,7 +2466,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				String relType=theTreeNode.relType;	
 				String type=theTreeNode.type;	
 				String theSupertypes;
-				String salida2="";
+				String acumString2="";
 				theChild=theTreeNode.nameFeature;
 				if (relType.contentEquals("O")) {
 					theChild="["+theChild+"]";
@@ -2558,23 +2477,22 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				String sentence="";
 				sentence=theTreeNode.nameNode+": ";
 				System.out.println(sentence);
-				salida2=iterateNodes(theTree, theLevel, idFoundNode,entrada);
-				theRest+=salida2;
+				acumString2=iterateNodes(theTree, theLevel, idFoundNode,entrada);
+				theRest+=acumString2;
 			}
 
 		}
 		if (suffix.length()>0) {
-			salida=prefix+suffix+"\n"+theRest;
+			acumString=prefix+suffix+"\n"+theRest;
 		}else {
-			salida=theRest;
+			acumString=theRest;
 		}
-		return salida;
+		return acumString;
 	}
 	 void loadConfiguration(){
 		config.put("representation", "text");
 	}
 	 boolean loadFeaturesFile() {
-		//TODO: Adaptar fichero a nuevo formato de Features
 
 		Feature theFeature=new Feature();
 		boolean resul=false;
@@ -2590,7 +2508,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			String line = reader.readLine();
 			line=line.trim();
 			while (line != null) {
-				//System.out.println(line);
 				if (line.length()>0) {
 					theFeature.name=line;
 					eFeatures.add(theFeature);
@@ -2623,7 +2540,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			String line = reader.readLine();
 			line=line.trim();
 			while (line != null) {
-				//System.out.println(line);
 				if (line.length()>0) {
 					String firstChar=line.substring(0,1).trim();
 					if (!firstChar.contentEquals("#") ) {
@@ -2663,18 +2579,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 
 	}
 
-
-	/*
-	 void loadSystem(int theIndex){
-		systemName=getProjectName(theIndex);
-		populateTree(theIndex);
-		loadConstraintsDB(theIndex);
-		loadSupertypes();
-		loadFeaturesSupertypesRelationsDB();
-
-	}
-	 */
-
+ 
 	 boolean populateFMfromFMFile(ArrayList<String> fmFile) {
 		String line="";
 		int lineCounter=0;
@@ -2694,7 +2599,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			while ((!endFile) && (!isLine)) {
 				line=fmFile.get(x).trim();
 				lineCounter++;
-				System.out.println("Linea "+lineCounter+":"+line);
+				System.out.println("Line "+lineCounter+":"+line);
 
 				if (line.length()>0) {
 					isLine=true;
@@ -2706,7 +2611,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			}
 
 			if (isLine) {
-				//System.out.println("+|"+line+"|+");
 				theChar=line.substring(0,1);
 				if (theChar.contentEquals("%")) {
 					switch (line) {
@@ -2740,20 +2644,19 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						String lastChar="";
 						lineLen=line.length();
 						lastChar=line.substring(lineLen - 1);
-						//System.out.println(line);
 						switch (curSection) {
 						case 1:
 							// Relationships
 
 							// 1. separating subject from predicate
-							if (!line.substring(lineLen-1).contentEquals(";")) { //si falta el ; al final de línea nos recuperamos en vez de dar error
+							if (!line.substring(lineLen-1).contentEquals(";")) {
 								line+=";";
 								lineLen=line.length();
 								lastChar=line.substring(lineLen - 1);								
 							}
 							
 							if (!lastChar.contentEquals(";")) {
-								System.out.println("ERROR DE SINTAXIS EN FM LINEA "+lineCounter+" - FALTA ; AL FINAL - ENCONTRADO|"+line);
+								System.out.println("SYNTAX ERROR IN LINE "+lineCounter+" - MISSING ; - FOUND|"+line);
 								System.exit(12);
 							}
 							
@@ -2762,10 +2665,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							int idParentNode=0;
 							String newFeature="";
 
-							String[] lineParts = line.split(":"); //separa sujeto y predicado
-
-							//System.out.println("Subject:"+lineParts[0]);
-							//System.out.println("Predicate:"+lineParts[1]);
+							String[] lineParts = line.split(":"); 
 
 							newFeature=lineParts[0];
 
@@ -2777,11 +2677,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								// there is no need to search parent node in root node. In first node there is no parent node
 								newNode="";
 								newNode=lineParts[0].trim();
-/*
-								String featureSet=lineParts[1].trim();
-								String[] features = featureSet.split(" ");
-								int childrenTotal=features.length;
-*/								
 								Feature myFeature=new Feature();
 								myFeature.name=newNode;
 								myFeature.supertypes=new ArrayList<String>();
@@ -2797,13 +2692,10 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								theNode.nameFeature=newNode;
 								theNode.alias=newNode;
 								theNode.relType="M";
-//								theNode.totChildren=childrenTotal;
 								theNode.totChildren=0;
 								theNode.relSiblings="AND";
 								theNode.type="BASIC";
 								theNode.level=0;
-								//theNode.relation=rs.getString("relation");
-								//theNode.requirement=rs.getString("requirement");
 								eTree.add(theNode);	
 								newNode="";
 								idParentNode=theNode.idNode;
@@ -2814,16 +2706,16 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								// Searching for parent node
 								boolean isFound=false;
 								Iterator<TreeNode> it = eTree.iterator();
-								boolean hayMas=false;
-								hayMas=it.hasNext();
-								while ((!isFound) && (hayMas)) {
+								boolean foundMore=false;
+								foundMore=it.hasNext();
+								while ((!isFound) && (foundMore)) {
 									TreeNode theTreeNode=it.next();
 									if (newFeature.contentEquals(theTreeNode.nameNode)) {
 										idParentNode=theTreeNode.idNode;
 										parentLevel=theTreeNode.level;
 										isFound=true;
 									}
-									hayMas=it.hasNext();
+									foundMore=it.hasNext();
 								}	
 								if (!isFound) {
 									System.out.println("Error, feature parent not found Feature:"+newFeature);
@@ -2834,13 +2726,12 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							// 2.1 searching features and populating list
 							List<String> predicates = new ArrayList<>();
 							String predicate="";
-							boolean isFinal=false; //se pone a true cuando llegamos al final de la linea
+							boolean isFinal=false; 
 							int pos=0;
 							String myCar="";
 							String theFeature="";
 
 							predicate=lineParts[1];
-							//System.out.println("+|"+predicate+"|+"); 
 
 							int posBeginSet=0;
 							int posEndSet=0;
@@ -2855,34 +2746,27 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							int tAND=0;
 							int tOR=0;
 							int tXOR=0;
-							while (!isFinal) {  //bucle que recorre la linea de principio a final y la procesa
+							while (!isFinal) {  
 								pos++;
 								if (pos<lon) {
 									myCar=predicate.substring(pos,pos+1);
 									if (myCar.contentEquals("{")) {
 										isCardinality=true;
 										newNode=newNode+myCar;
-										//System.out.println(newNode);
+										
 									}else if (myCar.contentEquals("}")) {
 										isCardinality=false;
 										newNode=newNode+myCar;
-										//System.out.println(newNode); 
+										 
 									} else if ((myCar.contentEquals(" ")) && (isCardinality)) {
 										newNode=newNode+myCar;
-										//System.out.println(newNode); 
+										 
 									} else if ((myCar.contentEquals(" ")) || (myCar.contentEquals(";"))) {
 										if (myCar.contentEquals(";")) {
 											isFinal=true;
 										}
-										/*
-										if ((newNode.indexOf("[")==0) && (newNode.indexOf("{")<1)) {
-											System.out.println("ERROR DE SINTAXIS EN FM LINEA "+lineCounter+" - ESPACIO NO ESPERADO TRAS RANGO - ENCONTRADO:"+newNode);
-											System.exit(11);
-										} 
-										*/
 										if (newNode.indexOf("{")>0) {
 											// SET  (SET)
-
 
 											// split string into 2 parts: cardinality and set of features
 											String[] theParts = newNode.split("]");
@@ -2890,7 +2774,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 												theParts[0]=theParts[0].trim();
 												theParts[1]=theParts[1].trim();
 											} else {
-												System.out.println("ERROR DE SINTAXIS EN FM LINEA "+lineCounter+" - FALTA CORCHETE CIERRE - ENCONTRADO:"+newNode);
+												System.out.println("\"SYNTAX ERROR IN LINE \"+lineCounter+\" - CLOSE BRACKET MISSING - FOUND:"+newNode);
 												System.exit(8);
 											}
 
@@ -2908,20 +2792,20 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 											cardinality=cardinality.substring(1);
 											String[] carParts = cardinality.split(",");
 											if (carParts.length!=2) {
-												System.out.println("ERROR DE SINTAXIS EN FM LINEA "+lineCounter+" - FALTA MIN O MAX EN CARDINALIDAD - ENCONTRADO:"+cardinality);
+												System.out.println("SYNTAX ERROR IN LINE "+lineCounter+" - MISSING MIX OR MAX IN CARDINALITY - FOUND:"+cardinality);
 												System.exit(5);
 											}
 											if ((carParts[0].length()>0) && (utiles.isInteger(carParts[0]))) {
 												min=Integer.parseInt(carParts[0]);	
 											} else {
-												System.out.println("ERROR DE SINTAXIS EN FM LINEA "+lineCounter+" - ¿CORCHETE APERTURA? - ENCONTRADO:"+cardinality);
+												System.out.println("SYNTAX ERROR IN LINE "+lineCounter+" - OPENING BRACKET MISSING - FOUND:"+cardinality);
 												System.exit(6);
 												
 											}
 											if ((carParts[1].length()>0) && (utiles.isInteger(carParts[1]))) {
 												min=Integer.parseInt(carParts[0]);	
 											} else {
-												System.out.println("ERROR DE SINTAXIS EN FM LINEA "+lineCounter+" - ¿CORCHETE CIERRE? - ENCONTRADO:"+cardinality);
+												System.out.println("SYNTAX ERROR IN LINE "+lineCounter+" - CLOSE BRACKET MISSING - FOUND:"+cardinality);
 												System.exit(7);
 												
 											}											
@@ -2958,9 +2842,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 											}else if (childrenTotal==max) {
 												theNode.relSiblings="OR";
 												tOR++;
-											} else {
-												theNode.relSiblings="YOR";
-												System.out.println("ERROR SINTACTICO - Encontrada relación YOR|"+line);
 											}
 											theNode.level=parentLevel+1;
 											Feature thFeature=new Feature();
@@ -2977,7 +2858,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 											// processing features  (SET)
 											for (int i=0;i<features.length;i++) {
 												if (isFeatureUsed(features[i],eTree)) {
-													System.out.println("Caracteristica repetida:"+features[i]);
+													System.out.println("DUPLICATED FEATURE:"+features[i]);
 													System.exit(34);
 												}
 														
@@ -3028,7 +2909,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 											theNode.idNode=nodeCounter;
 											theNode.idParentNode=idParentNode;
 											theNode.relType=relParent;
-											theNode.relSiblings="AND";  //OJO CON EL EJE
+											theNode.relSiblings="AND"; 
 											theNode.type="BASIC";
 											theNode.nameNode=newNode;
 											theNode.idFeature=0;
@@ -3043,22 +2924,18 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 											thFeature.supertypes=stDummy;
 											theNode.feature=thFeature;
 
-											//theNode.relation=rs.getString("relation");
-											//theNode.requirement=rs.getString("requirement");
 											eTree.add(theNode);		
 											newNode="";
 											tChildren++;
 										}
 									} else {
 										newNode=newNode+myCar;
-										//System.out.println(newNode); 
 									}
 								} else {
 									isFinal=true;
 								}
-							} // fin bucle while que recorre la línea
+							} 
 							
-							//actualizar contadores del padre (totChildren)
 							Iterator<TreeNode> it6 = eTree.iterator();
 							boolean moreNodes=it6.hasNext();
 							boolean isFound2=false;
@@ -3091,7 +2968,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 								// There are nodes in the tree
 								boolean isFound=false;
 								Iterator<TreeNode> it = eTree.iterator();
-								boolean hayMas=false;
+								boolean foundMore=false;
 								boolean isSubjectFound=false;
 								boolean isPredicateFound=false;
 								boolean isDependency=false;
@@ -3107,20 +2984,20 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 									String theDependency=parts[1];
 
 									it = eTree.iterator();
-									hayMas=it.hasNext();
+									foundMore=it.hasNext();
 
-									hayMas=it.hasNext();
+									foundMore=it.hasNext();
 									int idFeatureSubject=0;
 									int idFeaturePredicate=0;
 
 									// LOOKING FOR VALID SUBJECT
-									while ((hayMas) && (!isSubjectFound)) {
+									while ((foundMore) && (!isSubjectFound)) {
 										TreeNode theTreeNode=it.next();
 										if (theSubject.contentEquals(theTreeNode.nameFeature)) {
 											idFeatureSubject=theTreeNode.idNode;					        		
 											isSubjectFound=true;
 										}
-										hayMas= it.hasNext();
+										foundMore= it.hasNext();
 									}	
 									if (!isSubjectFound) {
 										System.out.println("Error, subject feature "+ theSubject + " not found! ... "+line); 
@@ -3129,18 +3006,18 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 
 									
 									it = eTree.iterator();
-									hayMas=it.hasNext();
+									foundMore=it.hasNext();
 
 									// LOOKING FOR VALID PREDICATE
 						        	String nameFea="";
-									while ((hayMas) && (!isPredicateFound)) {
+									while ((foundMore) && (!isPredicateFound)) {
 							        	TreeNode theTreeNode=it.next();
 							        	nameFea=theTreeNode.nameFeature;
 							        	if (thePredicate.contentEquals(nameFea)) {
 							        		idFeaturePredicate=theTreeNode.idNode;					        		
 							        		isPredicateFound=true;
 							        	}
-										hayMas= it.hasNext();
+										foundMore= it.hasNext();
 							        }	
 									if (!isPredicateFound) {
 										System.out.println("Error, subject feature "+ thePredicate + " not found! ... "+line); 
@@ -3179,7 +3056,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 										theConstraint.relationType=dependency;
 										eConstraints.add(theConstraint);
 									} else {
-										System.out.println("¡Pero esto qué es!"); 
+										System.out.println("ERROR"); 
 									}
 
 								} else {
@@ -3211,15 +3088,15 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							} else if (line.indexOf("IS COMPATIBLE WITH")>0) { 
 								sep="IS COMPATIBLE WITH";
 							} else {
-								System.out.println("ERROR DE SINTAXIS EN DEFINICION DE SUPERTIPO - faltan dos puntos - "+line);
+								System.out.println("SYNTAX ERROR DEFINING SUPERTYPES - Missing Colon - "+line);
 								System.exit(1);
 							}
 							theParts = line.split(sep);
 							if (theParts.length!=2) {
-								System.out.println("ERROR DE SINTAXIS EN DEFINICION DE SUPERTIPO - falta sujeto o predicado - "+line);
+								System.out.println("SYNTAX ERROR DEFINING SUPERTYPES - MISSING SUBJECT OR PREDICATE - "+line);
 								System.exit(2);
 							} else if ((theParts[0].length()==0) || (theParts[1].length()==0)) {
-								System.out.println("ERROR DE SINTAXIS EN DEFINICION DE SUPERTIPO - falta sujeto o predicado - "+line);
+								System.out.println("SYNTAX ERROR DEFINING SUPERTYPES - MISSING SUBJET OR PREDICATE - "+line);
 								System.exit(3);
 							}
 
@@ -3234,7 +3111,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							String[] aux=thePredicate.split(",");
 							for (int j=0;j<aux.length;j++){
 								if (aux[j].contains(" ")) {
-									System.out.println("ERROR EN DEFINICION DE SUPERTIPO - separador de supertipos es la coma - "+line);
+									System.out.println("SYNTAX ERROR DEFINING SUPERTYPES - supertypes separator is comma - "+line);
 									System.exit(36);
 								}
 							}							
@@ -3243,7 +3120,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							boolean res3=false;
 							res3=setSupertypesFeatureNode(theSubject,theBits);
 							if (res3) {
-								System.out.println("Supertipos "+thePredicate + " conectados a "+theSubject);
+								System.out.println("Supertypes "+thePredicate + " connected to "+theSubject);
 							} else {
 								System.out.println("ERROR, FEATURE NOT FOUND, SUPERTYPES NOT ATTACHED");
 								
@@ -3252,7 +3129,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							break;
 						case 5:
 							// SupertypesPriority
-							System.out.println("Seccion SupertypesPriority");
+							System.out.println("Section SupertypesPriority");
 							String[] supertypeList = line.split(",");
 							eSupertypesPriority=supertypeList;
 
@@ -3317,8 +3194,8 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 	}
 
 	 void processXMLNodes(Node node) {
-		String valor;
-		String atributo;
+		String theValue;
+		String theAttribute;
 		TreeNode theNode=null;     
 		int parentLevel=0;
 		int idFeatureParent=0;
@@ -3331,7 +3208,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		}
 		int type = node.getNodeType();
 		switch ( type ) {
-		// Imprimir Documento 
+ 
 		case Node.DOCUMENT_NODE: { //typeNode 0
 			NodeList children = node.getChildNodes();
 			for ( int iChild = 0; iChild < children.getLength(); iChild++ ) {
@@ -3341,7 +3218,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			break;
 		}
 
-		// Imprimir elementos con atributos
+
 		case Node.ELEMENT_NODE: {  //typeNode 1
 			out.print('<');
 			out.print(node.getNodeName());
@@ -3354,7 +3231,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			out.flush();
 
 			switch (elementName) { 
-			case "feature-model":  // cabecera, no hace falta procesar esto
+			case "feature-model":  
 				out.print('>');
 				out.flush();
 				children = node.getChildNodes();
@@ -3366,7 +3243,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				}
 
 				break;
-			case "feature": //nodo raiz
+			case "feature":
 				for ( int i = 0; i < attrs.length; i++ ) {
 					Attr attr = attrs[i];
 					out.print(' ');
@@ -3432,7 +3309,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				if ( children != null ) {
 					int len = children.getLength();
 					for ( int i = 0; i < len; i++ ) {
-						//System.out.println(children.item(i).getNodeName());
 						processXMLNodes(children.item(i));
 					}
 				}		       			
@@ -3449,17 +3325,17 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					out.print('"');
 					out.flush();
 
-					atributo=attr.getNodeName();
-					valor=attr.getNodeValue();
-					switch (atributo) {
+					theAttribute=attr.getNodeName();
+					theValue=attr.getNodeValue();
+					switch (theAttribute) {
 					case ("max"):
-						xmlMaxCardin=Integer.parseInt(valor);
+						xmlMaxCardin=Integer.parseInt(theValue);
 					break;
 					case ("min"):
-						xmlMinCardin=Integer.parseInt(valor);
+						xmlMinCardin=Integer.parseInt(theValue);
 					break;
 					default:
-						System.out.println("ATTR NO ESPERADA EN BINARY RELATION");
+						System.out.println("ATTR NOT EXPECTED IN BINARY RELATION");
 						break;
 					}	       			
  
@@ -3488,7 +3364,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 
 				break;
 			case "solitaryFeature":  
-				//recorremos atributos 
 				for ( int i = 0; i < attrs.length; i++ ) {
 					Attr attr = attrs[i];
 					out.print(' ');
@@ -3500,22 +3375,21 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					out.print('"');
 					out.flush();
 
-					atributo=attr.getNodeName();
-					valor=attr.getNodeValue();
-					switch (atributo) {
+					theAttribute=attr.getNodeName();
+					theValue=attr.getNodeValue();
+					switch (theAttribute) {
 					case ("name"):
 						myFeature=new Feature();
-						myFeature.name=valor;
-						//myFeature.supertypes=new ArrayList<String>();
+						myFeature.name=theValue;
 						nodeCounter++;
 						theNode=new TreeNode();
 						theNode.feature=myFeature; 
 						theNode.idNode=nodeCounter;
 						theNode.idParentNode=nodeParentNow;
-						theNode.nameNode=valor;
+						theNode.nameNode=theValue;
 						theNode.idFeature=0;
-						theNode.nameFeature=valor;
-						theNode.alias=valor;
+						theNode.nameFeature=theValue;
+						theNode.alias=theValue;
 						theNode.minCardinality=xmlMinCardin;
 						theNode.maxCardinality=xmlMaxCardin;
 						if ((xmlMinCardin==0)&&(xmlMaxCardin==1)) {
@@ -3524,29 +3398,25 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							theNode.relType="M";	
 						}
 					
-						//theNode.totChildren=childrenTotal;
 						theNode.relSiblings="AND";
 						theNode.level=nodeParents.size();
 						eTree.add(theNode);	
-						//newNode="";
 						nodeParents.push(theNode.idNode);
 						nodeParentNow=theNode.idNode;
 
 					break;
 					default:
-						System.out.println("ATTR NO ESPERADA EN solitaryFeature");
+						System.out.println("ATTR NOT EXPECTED IN solitaryFeature");
 					}	       			
 				}		
 				out.print('>');
 				out.flush();
 
 				lastXMLNode="solitaryFeature";
-				//recorremos hijos
 				children = node.getChildNodes();
 				if ( children != null ) {
 					int len = children.getLength();
 					for ( int i = 0; i < len; i++ ) {
-						//System.out.println(children.item(i).getNodeName());
 						processXMLNodes(children.item(i));
 					}
 				}
@@ -3570,20 +3440,20 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					out.print('"');
 					out.flush();
 
-					atributo=attr.getNodeName();
-					valor=attr.getNodeValue();
-					switch (atributo) {
+					theAttribute=attr.getNodeName();
+					theValue=attr.getNodeValue();
+					switch (theAttribute) {
 					case ("name"):
-						newSubSet=valor;
-					    if (valor.contentEquals("R-4")) {
-					    	System.out.println("ATENCION!");
+						newSubSet=theValue;
+					    if (theValue.contentEquals("R-4")) {
+					    	System.out.println("WARNING!");
 					    }
-					    if (valor.contentEquals("R-5")) {
-					    	System.out.println("ATENCION!");
+					    if (theValue.contentEquals("R-5")) {
+					    	System.out.println("WARNING!");
 					    }
 					break;
 					default:
-						System.out.println("ATTR NO ESPERADA EN SET-RELATION");
+						System.out.println("ATTR NOT EXPECTED IN SET-RELATION");
 						break;
 					}	       			
 
@@ -3594,8 +3464,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				xmlMinCardin=0;
 				xmlMaxCardin=0;
 
-				//escribimos una feature auxiliar
-				//System.out.println("escribimos feature set" );
 				contSubSet++;
 				if (newSubSet.contentEquals("")) {
 					newSubSet="SET-"+contSubSet+"-FEATURE";
@@ -3636,7 +3504,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				if ( children != null ) {
 					int len = children.getLength();
 					for ( int i = 0; i < len; i++ ) {
-						//System.out.println(children.item(i).getNodeName());
 						processXMLNodes(children.item(i));
 					}
 				}	
@@ -3644,7 +3511,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				nodeParentNow = (int)nodeParents.peek();				
 				break;
 			case "groupedFeature":
-				//recorremos atributos para buscar el nombre, sólo debe haber un atributo
 				for ( int i = 0; i < attrs.length; i++ ) {
 					Attr attr = attrs[i];
 					out.print(' ');
@@ -3656,13 +3522,12 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					out.print('"');
 					out.flush();
 
-					atributo=attr.getNodeName();
-					valor=attr.getNodeValue();
-					switch (atributo) {
+					theAttribute=attr.getNodeName();
+					theValue=attr.getNodeValue();
+					switch (theAttribute) {
 					case ("name"):
 						myFeature=new Feature();
-					myFeature.name=valor;
-					//myFeature.supertypes=new ArrayList<String>();
+					myFeature.name=theValue;
 
 
 					nodeCounter++;
@@ -3670,25 +3535,23 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					theNode.feature=myFeature; 
 					theNode.idNode=nodeCounter;
 					theNode.idParentNode=nodeParentNow;
-					theNode.nameNode=valor;
+					theNode.nameNode=theValue;
 					theNode.idFeature=0;
-					theNode.nameFeature=valor;
-					theNode.alias=valor;
+					theNode.nameFeature=theValue;
+					theNode.alias=theValue;
 					theNode.minCardinality=xmlMinCardin;
 					theNode.maxCardinality=xmlMaxCardin;
 					theNode.type="SET";
-					//theNode.totChildren=childrenTotal;
 					theNode.relSiblings="AND";
 					theNode.level=nodeParents.size();
 					eTree.add(theNode);	
-					//newNode="";
 					nodeParents.push(theNode.idNode);
 					nodeParentNow=theNode.idNode;
 
 				
 					break;
 					default:
-						System.out.println("ATTR NO ESPERADA EN groupedFeature");
+						System.out.println("ATTR NOT EXPECTED IN groupedFeature");
 					}	       			
 				}	
 				
@@ -3698,12 +3561,10 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				lastXMLNode="groupedRelation";
 				
 
-				//recorremos hijos por si hubiera
 				children = node.getChildNodes();
 				if ( children != null ) {
 					int len = children.getLength();
 					for ( int i = 0; i < len; i++ ) {
-						//System.out.println(children.item(i).getNodeName());
 						processXMLNodes(children.item(i));
 					}
 				}		
@@ -3746,7 +3607,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						featureObject=attr.getNodeValue();
 						break;
 					default:
-						System.out.println("yoquese");
+						System.out.println("ERROR");
 						break;
 					}
 				}	
@@ -3756,14 +3617,14 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 
 				Iterator<TreeNode> it = eTree.iterator();
 
-				boolean hayMas=it.hasNext();
+				boolean foundMore=it.hasNext();
 				boolean isSubjectFound=false;
 				boolean isObjectFound=false;
 				int idFeatureSubject=0;
 				int idFeaturePredicate=0;
 
 				// SEEKING VALID SUBJECT
-				while ((hayMas) && (!isSubjectFound)) {
+				while ((foundMore) && (!isSubjectFound)) {
 					TreeNode theTreeNode=it.next();
 					if (featureSubject.contentEquals(theTreeNode.nameFeature)) {
 						idFeatureSubject=theTreeNode.idNode;					        		
@@ -3774,24 +3635,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					System.out.println("Error, subject feature not found!"); 
 				}			
 
-				/*
-					it = eTree.iterator();
-					hayMas=it.hasNext();
-
-					// LOOKING FOR VALID PREDICATE
-		        	String nameFea="";
-					while ((hayMas) && (!isPredicateFound)) {
-			        	TreeNode theTreeNode=it.next();
-			        	nameFea=theTreeNode.nameFeature;
-			        	if (thePredicate.contentEquals(nameFea)) {
-			        		idFeaturePredicate=theTreeNode.idNode;					        		
-			        		isPredicateFound=true;
-			        	}
-			        }	
-					if (!isPredicateFound) {
-						System.out.println("Error, predicate feature not found!"); 
-					} 
-				 */
 				isObjectFound=true;
 				if (( isSubjectFound) && (isObjectFound) ) {
 					Constraint theConstraint=new Constraint();
@@ -3800,7 +3643,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					theConstraint.relationType=dependency;
 					eConstraints.add(theConstraint);
 				} else {
-					System.out.println("¡Pero esto qué es!"); 
+					System.out.println("ERROR"); 
 				}				
 				break;
 			default:
@@ -3808,14 +3651,12 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			}
 		}
 
-		// Imprimir Texto 
 		case Node.TEXT_NODE: { // type 3
 			out.print(node.getNodeValue());
 			out.flush();
 			break;
 		}
 
-		// Imprimir Nodos con Instrucciones de Proceso 
 		case Node.PROCESSING_INSTRUCTION_NODE: {
 			out.print("<?");
 			out.print(node.getNodeName());
@@ -3829,25 +3670,23 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			break;
 		}
 
-		// Imprimir Texto de Elementos CDATA
+		// 
 		case Node.CDATA_SECTION_NODE: {
 			System.out.print(node.getNodeValue());
 			break;  
 		}
 
-		} // Termina Switch
+		}
 
-		// En caso de ser nodo de Elemento cerrar Tag en Pantalla 
 		if ( type == Node.ELEMENT_NODE ) {
 			out.print("</");
 			out.print(node.getNodeName());
 			out.print('>');
 		}
 
-		// Enviar a Pantalla Buffer
 		out.flush();
 
-	} // Termina Impresion de Nodos 
+	} 
 
 	 int processConfig (String pathScript) {
 		int resul=0;
@@ -3876,7 +3715,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				x++;
 
 				if (isLine) {
-					//System.out.println("+|"+line+"|+");
 					theChar=line.substring(0,1);
 					if (line.contains("=")) {
 						String[] parts=line.split("=");
@@ -3938,7 +3776,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			boolean isComment=false;
 			line=scriptFile.get(x).trim();
 			lineCounter++;
-			System.out.println("Linea "+lineCounter+":"+line);
+			System.out.println("Line "+lineCounter+":"+line);
 
 			if (line.trim().length()==0) {
 				isLine=false;
@@ -3948,7 +3786,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			x++;
 
 			if (isLine) {
-				//System.out.println("+|"+line+"|+");
 				theChar=line.substring(0,1);
 				if ((theChar.contentEquals(";"))||(theChar.contentEquals("%"))) { 
 					// if first char is ; => is comment
@@ -3982,16 +3819,10 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					switch (sentence) {
 					case "add_feature":
 						if (gPathFMFile.trim().length()==0) {
-							System.out.println("Fichero FM no establecido. ¿Se ha lanzado LOAD_FM?");
+							System.out.println("FM FILE NOT DEFINED. LOAD_FM?");
 							System.exit(30);
 						}
-						//resetSystem();
-						//readFMFile(gPathFMFile); //borrar
-						//populateFMfromFMFile(fmFile); //borrar
-						//String featureName,String description,String relation, String supertypes
 						addFAuto(arr[0],"",arr[1],arr[2],arr[3]);
-						//showFeatureModelTextLog(eTree);  //borrar
-						//showTreeValues(eTree,"L"); //borrar							
 						break;					
 					case "check_for_changes":
 						if (arr.length==2) {	
@@ -4000,20 +3831,19 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							maxretrys=Integer.valueOf(arr[0]);
 							secondsbetween=Integer.valueOf(arr[1]);
 							String myUrl = "http://www.pclandia.net/ruva/reconf.inf";
-							String salida="";
+							String acumString="";
 							boolean isChanged=false;
 							int countretry=0;
 							while ((!isChanged)&&(countretry<maxretrys)) {
 								try {
 									countretry++;
-									salida=utiles.getHTML(myUrl);
-									System.out.println("Cambios ENCONTRADOS");
+									acumString=utiles.getHTML(myUrl);
+									System.out.println("CHANGE FOUND");
 									String[] arr2=null;
-									arr2=salida.split(";");
-									// addFAutoParent(arr2[1],arr[2]);
+									arr2=acumString.split(";");
 									isChanged=true;								
 								} catch (FileNotFoundException fe){
-									System.out.println("Cambios no encontrados. Reintentando en 60 segundos");
+									System.out.println("CHANGE NOT FOUND. Retrying in 60 seconds");
 									try {
 										TimeUnit.SECONDS.sleep(secondsbetween);
 									} catch	(Exception e2) {
@@ -4032,7 +3862,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					case "cls":
 						totalSuccess=0;
 						totalFailures=0;
-						// gLog.clear();
 						break;
 					case "csv2xmlfi":
 						if (arr.length==2) {
@@ -4071,13 +3900,12 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							int maxSupertypes=Integer.valueOf(arr[2]);
 							generateAddFeatureSet(sizeSet,supertypeSet,maxSupertypes,arr[3]);
 						}else {
-							System.out.println("Mas parametros de los esperados: "+arr.length);
+							System.out.println("More parameters expected: "+arr.length);
 							System.exit(18);
 						}
 						break;
 					case "include_init":
 						System.out.println(arr.length);
-						// resetSystem();
 						if (arr.length==1) {
 							gLog.add("Procesando: "+arr[0]);							
 							processScript(arr[0]);
@@ -4117,7 +3945,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						    default:
 						    	break;
 						    }
-							//showFeatureModel();								
 						} else {
 							System.out.println("Arguments number mismatch. Expected 1 (path). ");
 						}
@@ -4132,7 +3959,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							populateFMfromFMFile(fmFile);
 							gLog.add("Loaded "+gPathFMFile);
 					    	break;
-							//showFeatureModel();								
 						} else {
 							System.out.println("Arguments number mismatch. Expected 1 (path). ");
 						}
@@ -4146,7 +3972,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					    	populateFMfromXMLFile(myPath);
 							gLog.add("Loaded "+gPathFMFile);
 					    	break;
-							//showFeatureModel();								
 						} else {
 							System.out.println("Arguments number mismatch. Expected 1 (path). ");
 						}
@@ -4158,7 +3983,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						gLogAccumulative=false;
 						break;
 					case "log_set_name":
-						if (arr.length==1) { // si viene un parametro le metemos como path del log
+						if (arr.length==1) {
 							if (arr[0].trim().contentEquals("default")) {
 								File f=new File(pathScript);
 								gLogPathName=f.getParent()+"\\"+f.getName()+".log";
@@ -4167,7 +3992,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 							}
 							gLog.add("Path log: "+gLogPathName);
 						} else {
-							System.out.println("Movidon, hay menos o mas de 1 parametro!");
+							System.out.println("EXPECTED SINGLE PARAMETER");
 						}
 						break;
 					case "record_time_start":
@@ -4202,28 +4027,19 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 						    default:
 						    	break;
 						    }
-							//showFeatureModel();								
 						} else {
 							System.out.println("Arguments number mismatch. Expected 1 (path). ");
 						}		
 						break;						
 					case "remove_feature": 
-						if (arr.length==1) { // si viene un parametro le metemos como path del log
-							/*
-							 * if (remoFeature(arr[0])) {
-							 * 		gLog.add("Feature removed");
-							 * }else{
-							 * 		gLog.add("Feature NOT removed");
-							 * }
-							 */
+						if (arr.length==1) {
 							
 						} else {
-							System.out.println("Movidon, hay menos o mas de 1 parametro!");
+							System.out.println("More or less than 1 parameter!");
 						}						
 						break;
 					case "reset":
 						resetSystem();
-						// gLog.clear();
 						break;
 					case "show_feature_list":  
 						showFeatureList(eTree,"L");
@@ -4251,7 +4067,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					    theSegundos=String.format("%.2f", insertTimeRound);
 					    theMilisegundos=String.format("%.0f", insertTimeRound2);
 						gLog.add("INSERTION TIME USED: "+ theSegundos + " second(s) ");
-						//gLog.add(dtf.format(LocalDateTime.now()));
 						break;
 					case "show_tree_values":  
 						showTreeValues(eTree,"L");
@@ -4318,7 +4133,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			reader = new BufferedReader(new FileReader(fmPathFilename));
 			String line = reader.readLine();
 			while (line != null) {
-				//System.out.println(line);
 				fmFile.add(line);
 				line = reader.readLine();
 			}
@@ -4327,39 +4141,84 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			e.printStackTrace();
 			resul=false;
 		} catch (Exception e) {
-			System.out.println("Fichero no encontrado: "+fmPathFilename);
+			System.out.println("File not found: "+fmPathFilename);
 			System.exit(37);
 		}
 		return resul;			
 	}
 	 void removeFeatureAuto(String featureName) {
-		// Clone eTree to eTree2
+		 	// 1 Create iterator
+			// 2 locate feature to remove
+			// 3 has children?
+				// 3.1 no
+					// 3.1 constraints?
+						// 3.1.1 yes - cancel 
+						// 3.1.2 no - execute remove
+				// 3.2 yes
+					// 3.2 constraints?
+						// 3.2.1 YES - cancel
+						// 3.2.1 NO - remove recurrent nodes
 		Collection eTree2 = new ArrayList<TreeNode>();
 		for (Iterator<TreeNode> it = eTree.iterator(); it.hasNext();) {
 			TreeNode theTreeNode=it.next();
-			if (isAncestor(theTreeNode.nameFeature,featureName,eTree)) {
-				eTree2.add(theTreeNode);
+			if (theTreeNode.nameFeature.contentEquals(featureName)) {
+				if (theTreeNode.totChildren>0) {
+					// has descendants
+					boolean childInConstraint=false;
+					List<String> lista=new ArrayList<String>();
+					lista=getDescendantsAll(eTree,theTreeNode.idNode,lista);
+					String acumString="";
+					if (lista.size()>0) {
+						Iterator<String> it4 = lista.iterator();
+						String current = "";
+						while ((!childInConstraint)&&(it4.hasNext()) ) {
+							current = it4.next();
+							if (isFeatureInConstraints(featureName,eConstraints)) {
+								childInConstraint=true;
+							}
+						}
+						if (!childInConstraint) {
+							
+							boolean currentRemoved=false;
+							Iterator<String> it5 = lista.iterator();
+							String current2 = "";
+							while ((!currentRemoved)&&(it5.hasNext())) {
+								
+								currentRemoved=false;
+								current2=it5.next();
+								Collection eTree3 = new ArrayList<TreeNode>();
+								for (Iterator<TreeNode> it6 = eTree.iterator(); it.hasNext();) {
+									TreeNode theTreeNode2=it6.next();
+									if (theTreeNode2.nameFeature.contentEquals(current2)) {
+										currentRemoved=true;
+										it6.remove();
+									}
+									
+								}
+							}	
+						}
+						it.remove();
+							
+					}
+					
+					
+				} else {
+					// no descendants
+					if (isFeatureInConstraints(featureName,eConstraints)) {
+						// yes. Canceling feature
+						System.out.println("Found Feature in Constraint. Canceling removing "+featureName);
+					} else {
+						//no. Removing Feature
+						it.remove();
+						System.out.println("Feature "+featureName+ " removed");
+					}
+				}
 			}
 		}
-
-		// Seek for son nodes
-		
-		// remove son nodes
-		
-		// check constraints affected and delete constraint if affected
-		
-		// check if model is valid
-		
-		// move eTree2 to eTree
-
 	}
 	
-	 void replaceFeature(Collection eTree, Feature oldFeature, Feature newFeature ) {
-		
-	}
+ 
 	 void resetSystem(){
-//		eTree= new ArrayList<TreeNode>(); 
-//		eTreeWinner= new ArrayList<TreeNode>();
 		eTree.clear();
 		eTreeWinner.clear();
 		eConstraints.clear();
@@ -4369,7 +4228,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		eAttributes.clear();
 		theFM=new FeatureModel();
 		eComments.clear();
-		//eSupertypesPriority=
 		nodeParents.clear();
 		nodeParentNow=0;
 		contSubSet=0;
@@ -4377,8 +4235,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		lastName="";
 		feaTesting="";
 		feaParentTesting="";
-//		totalSuccess=0;
-//		totalFailures=0;
 		nodeCounter=0;
 		featCounter=0;
 		systemId=0;
@@ -4461,7 +4317,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				count++;
 				Feature theFeature=(Feature) itr.next();
 				if (count<26){
-					//System.out.println(theFeature.featureName+" (id="+theFeature.idFeature+")");			
 					System.out.println(theFeature.name);	
 				}
 			}
@@ -4526,7 +4381,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 
 
 
-	 boolean setSupertypesFeatureNode(String theFeatureNameNew,ArrayList<String> valores) {
+	 boolean setSupertypesFeatureNode(String theFeatureNameNew,ArrayList<String> theValues) {
 		// IN: feature name
 		// OUT: the feature object from collection eFeatures;
 		Feature featureFound=new Feature();
@@ -4534,17 +4389,17 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		boolean result=false;
 		Iterator itr = eTree.iterator();
 		while (itr.hasNext() && !isFound) {
-			TreeNode theNodito=(TreeNode) itr.next();
-			Feature theFeature=theNodito.feature;
+			TreeNode workingNode=(TreeNode) itr.next();
+			Feature theFeature=workingNode.feature;
 			if (theFeatureNameNew.equals(theFeature.name)) {
 				isFound=true;
-				theNodito.feature.supertypes=valores;
+				workingNode.feature.supertypes=theValues;
 				featureFound=theFeature;
 				result=true;
 			}
 		}		
 		if (!isFound) {
-			System.out.println("ERROR 35: No existe la característica "+theFeatureNameNew+". No se puede adjuntar el supertipo");
+			System.out.println("ERROR 35: FEATURE NOT EXISTS "+theFeatureNameNew+". CANT ATTACH SUPERTYPE");
 			System.exit(35);
 		}
 		return result;
@@ -4560,10 +4415,10 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			 *  R - F3 - F4 (F13,F14,F15,F16,F17,F18)
 			 *  
 			 */
-			TreeNode primero=new TreeNode();
+			TreeNode theFirst=new TreeNode();
 			Iterator itr = eTree.iterator();
-			primero=(TreeNode) eTree.iterator().next();
-			String root=primero.nameFeature;
+			theFirst=(TreeNode) eTree.iterator().next();
+			String root=theFirst.nameFeature;
 			gLog.add("============================================");
 			gLog.add("TREE - BRANCHES");
 			gLog.add("--------------------------------------------");
@@ -4576,44 +4431,42 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 				} else {
 					son="";
 				}
-				if (node.idParentNode==primero.idNode) {
+				if (node.idParentNode==theFirst.idNode) {
 					String phrase="";
 					
 					List<String> lista=new ArrayList<String>();
 					lista=getDescendantsAll(eTree,node.idNode,lista);
-					String salida="";
+					String acumString="";
 					if (lista.size()>0) {
-						// recorrer lista con las características y sacarlas en salida.
 						Iterator<String> it = lista.iterator();
 						String current = "";
 						while(it.hasNext() ) { 
 							current = it.next();
-							salida+=","+current.toString();
+							acumString+=","+current.toString();
 						}
-						String auxb=salida.substring(0,1);
+						String auxb=acumString.substring(0,1);
 						if (auxb.contentEquals(",")) {
-							salida=salida.substring(1);
+							acumString=acumString.substring(1);
 						}
 					} else  {
-						salida="";
+						acumString="";
 					}
 						
 						
 					if (son.length()>0) {
-						if (salida.trim().length()>0) {
-							phrase=root+"-"+son+"-"+salida;
+						if (acumString.trim().length()>0) {
+							phrase=root+"-"+son+"-"+acumString;
 						} else {
 							phrase=root+"-"+son;
 						}
 					}else {
-						System.out.println("RARO");
+						System.out.println("ERROR");
 						System.exit(50);
 					}
 					gLog.add(phrase);
 						
 				}
 			}
-			//gLog.add("============================================");
 		}
 				 
 	void showFeatureList(Collection eTree,String typeLog) {
@@ -4646,17 +4499,17 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 	    Collections.sort(s);
 	    
 	    String anterior="";
-		for (String palabro: s) {
+		for (String theString: s) {
 		    if (typeLog.contentEquals("L")) {
-		    	gLog.add(palabro);
+		    	gLog.add(theString);
 		    } else {
-		    	System.out.println(palabro);
+		    	System.out.println(theString);
 		    }
-		    if (anterior.contentEquals(palabro)) {
-		    	System.out.println("STRANGER THINGS");
+		    if (anterior.contentEquals(theString)) {
+		    	System.out.println("Error");
 		    	System.exit(51);
 		    }
-		    anterior=palabro;
+		    anterior=theString;
 		}
 	    if (typeLog.contentEquals("L")) {
 	    	gLog.add("============");
@@ -4793,16 +4646,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 
 			}
 
-
-
-
-			/* Sistema antiguo de Supertipos. Ahora están metidos en cada nodo
-			Iterator itr = eSupertypes.iterator();
-			while (itr.hasNext()) {
-				Supertype theSupertype=(Supertype) itr.next();
-				System.out.println(theSupertype.name);			
-			}
-			 */
+ 
 		}  
 		catch (Exception e)	    {
 			System.err.println("Got an exception! ");
@@ -4823,7 +4667,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			int idFoundNode=0;
 			if (theParentNode==theNode) {
 				idFoundNode=theTreeNode.idNode;
-				//String parentRelation=theTreeNode.category.trim();
 				String relSiblings=theTreeNode.relSiblings.trim();
 				String relType=theTreeNode.relType.trim();
 				String type=theTreeNode.type.trim();
@@ -4836,11 +4679,7 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					separator="";
 				}
 				String suffix="";
-				/* // ALEX
-		        if (theSupertypes.size()>0) {
-					suffix=" Supertypes:"+utiles.convertArrayListStringToString(theSupertypes)+")";
-		        }
-				 */ //FIN ALEX */ 
+ 
 				System.out.println("|"+repeatedLine+"> "+theTreeNode.nameNode+" TYPE="+ type + " PR="+relType+" SR="+relSiblings+" ST:"+theSupertypes+separator+suffix+separator+" Level: "+myLevel);
 				showSystemChildren(theTree, theLevel, idFoundNode);
 			}
@@ -4859,7 +4698,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 			int idFoundNode=0;
 			if (theParentNode==theNode) {
 				idFoundNode=theTreeNode.idNode;
-				//String parentRelation=theTreeNode.category.trim();
 				String relSiblings=theTreeNode.relSiblings.trim();
 				String relType=theTreeNode.relType.trim();
 				String type=theTreeNode.type.trim();
@@ -4872,18 +4710,13 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 					separator="";
 				}
 				String suffix="";
-				/* // ALEX
-		        if (theSupertypes.size()>0) {
-					suffix=" Supertypes:"+utiles.convertArrayListStringToString(theSupertypes)+")";
-		        }
-				 */ //FIN ALEX */ 
+ 
 				gLog.add("|"+repeatedLine+"> "+theTreeNode.nameNode+" TYPE="+ type + " PR="+relType+" SR="+relSiblings+" ST:"+theSupertypes+separator+suffix+separator+" Level: "+myLevel);
 				showSystemChildrenLog(theTree, theLevel, idFoundNode);
 			}
 		}
 	}	
 
-	/** Funcion utilizada para Ordenar Atributos de Elementos */
 
 	protected Attr[] sortAttributes(NamedNodeMap attrs) {
 
@@ -4911,28 +4744,24 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 
 		return(array);
 
-	} // Terminar ordenar Atributos 	
+	} 
 
-	/*
-	 * 
-	 *  vuelca todo lo que se ha generado antes en generateFM 
-	 * 
-	 */
+ 
 	 boolean writeFMFile(String thisPath) {
 		// mode 0 FAMA 1 mine
 		boolean resul=true;
 		boolean flagFound=false;
 
-		FileWriter fichero = null;
+		FileWriter theFile = null;
 		PrintWriter pw = null;
 		try {
-			fichero = new FileWriter(thisPath);
-			pw = new PrintWriter(fichero);
+			theFile = new FileWriter(thisPath);
+			pw = new PrintWriter(theFile);
 			for (int i = 0; i < fmFile.size(); i++) {
 				String line;
 				line=fmFile.get(i);
 				pw.println(line);
-				//System.out.println(fmFile.get(i));
+		 
 			}
 
 		} catch (Exception e) {
@@ -4941,8 +4770,8 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		} finally {
 			try {
 				// Ensure file is closed at the end 
-				if (null != fichero)
-					fichero.close();
+				if (null != theFile)
+					theFile.close();
 			} catch (Exception e2) {
 				e2.printStackTrace();
 				resul=false;
@@ -4951,33 +4780,30 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		return resul;
 	}
 	boolean writeFile(String thisPath, ArrayList<String> textBlock) {
-		// mode 0 FAMA 1 mine
+		// mode 0 FAMA mode 1 RuVa
 		boolean resul=true;
 		boolean flagFound=false;
 
-		FileWriter fichero = null;
+		FileWriter theFile = null;
 		PrintWriter pw = null;
 		try {
-			fichero = new FileWriter(thisPath);
-			pw = new PrintWriter(fichero);
+			theFile = new FileWriter(thisPath);
+			pw = new PrintWriter(theFile);
 			for (int i = 0; i < textBlock.size(); i++) {
-				//System.out.println("Procesando línea "+i);
 				String line;
 				line=textBlock.get(i);
 				pw.append(line+"\n");
-				//pw.println(line);
-				//System.out.println(fmFile.get(i));
 			}
 
 		} catch (Exception e) {
 			resul=false;
-			System.out.println("ERROR: Fichero no existe: "+thisPath);
+			System.out.println("ERROR: File not found: "+thisPath);
 			System.exit(19);
 		} finally {
 			try {
 				// Ensure file is closed at the end 
-				if (null != fichero)
-					fichero.close();
+				if (null != theFile)
+					theFile.close();
 			} catch (Exception e2) {
 				e2.printStackTrace();
 				resul=false;
@@ -4986,17 +4812,16 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		return resul;
 	}
 	boolean writeFileAccumulative(String thisPath, ArrayList<String> textBlock) {
-		// mode 0 FAMA 1 mine
+		// mode 0 FAMA 1 RuVa
 		boolean resul=true;
 		boolean flagFound=false;
 
-		FileWriter fichero = null;
+		FileWriter theFile = null;
 	    BufferedWriter bw = null;
 		try {
-			fichero = new FileWriter(thisPath,true);
-			bw = new BufferedWriter(fichero);
+			theFile = new FileWriter(thisPath,true);
+			bw = new BufferedWriter(theFile);
 			for (int i = 0; i < textBlock.size(); i++) {
-				//System.out.println("Procesando línea "+i);
 				String line;
 				line=textBlock.get(i);
 				bw.write(line);
@@ -5006,13 +4831,13 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 
 		} catch (Exception e) {
 			resul=false;
-			System.out.println("ERROR: Fichero no existe: "+thisPath);
+			System.out.println("ERROR: File not found: "+thisPath);
 			System.exit(19);
 		} finally {
 			try {
 				// Ensure file is closed at the end 
-				if (null != fichero)
-					fichero.close();
+				if (null != theFile)
+					theFile.close();
 			} catch (Exception e2) {
 				e2.printStackTrace();
 				resul=false;
@@ -5072,19 +4897,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 
 	}
 	void showStatistics() {
-		/*
-		 * Sacamos los siguientes datos:
-		 * 
-		 * número de características
-		 * número de características con hijos
-		 * número de características sin hijos
-		 * número de nodos and
-		 * número de nodos or
-		 * número de nodos xor
-		 * Máximo nivel de profundidad (level)
-		 * número de supertipos
-		 * número de nodos con supertipos
-		 */
 		int tFea=0;
 		int tBreedingNodes=0;
 		int tChildlessNodes=0;
@@ -5094,8 +4906,8 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		int tNodesMandatory=0;
 		int tNodesOptional=0;
 		int tLevel=0;
-		int tSupertypes=0; // número de supertipos presentes en el árbol
-		int tNumberNodesWithSupertypes=0; // Número de Nodos con supertipos
+		int tSupertypes=0;
+		int tNumberNodesWithSupertypes=0;
 		int tMaxSupertypesInNode=0;
 		int sumNodesSet=0; 
 		int maxBranchingFactor=0;
@@ -5108,7 +4920,6 @@ import es.us.isa.FAMA.models.variabilityModel.VariabilityModel;
 		Double porcenMan=0.0;
 		Double porcenOpt=0.0;
 		Double avgBranchingFactor=0.0;
-		//DecimalFormat df = new DecimalFormat("#.##");
 		DecimalFormat df = new DecimalFormat("#0.00");
 		
 		tFea=getFeatureNumber(eTree);
