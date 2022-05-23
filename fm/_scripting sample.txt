@@ -1,0 +1,16 @@
+%Script
+
+AddFeature F1 under R;
+AddFeature F2 under F1;
+AddFeature F3 under R;
+ChangeCharacter F3 to MANDATORY;
+ChangeCharacter F3 to OPTIONAL;
+ChangeChildrenRelation F3 to AND;
+ChangeChildrenRelation F3 to OR;
+ChangeChildrenRelation F3 to XOR;
+AddSupertypeTo F3 add ST1; 
+AddFeatureAuto FX(ST1,ST2,ST3);
+
+
+
+%Comments

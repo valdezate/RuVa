@@ -1,0 +1,5 @@
+%Relationships
+Aircraft: Wing [Engine] Materials;
+Wing: [1,3]{High Shoulder Low};
+Engine: [1,1]{Jet Piston};
+Materials: [1,4]{Metal Wood Cloth Plastic};
